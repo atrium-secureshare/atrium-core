@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.2](https://github.com/atrium-secureshare/atrium-core/compare/v0.0.1...v0.0.2) (2026-07-27)
+
+
+### Continuous Integration
+
+* build image from release-please instead of the release event ([302acbd](https://github.com/atrium-secureshare/atrium-core/commit/302acbd6a4e33e3bdf255cb983d0d20fc3f9d096))
+
 ## 0.0.1 (2026-07-27)
 
 
