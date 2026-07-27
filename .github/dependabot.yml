@@ -1,9 +1,9 @@
 version: 2
 
-# Commit-message prefixes feed release-please: runtime-affecting updates use
-# "fix" (→ patch release, shows in the changelog), pure tooling uses "chore"
-# (no release). npm dev-dependencies are demoted to "chore" via
-# prefix-development. Every PR is assigned to jbrunner; the auto-merge workflow
+# Commit-message prefixes feed release-please: dependency updates use "fix"
+# (→ patch release, shows in the changelog), including npm dev-dependencies
+# since they build the shipped assets. Only workflow updates use "chore"
+# (no release). Every PR is assigned to jbrunner; the auto-merge workflow
 # merges semver-minor/patch once CI is green.
 updates:
   - package-ecosystem: gomod
@@ -25,7 +25,6 @@ updates:
       - jbrunner
     commit-message:
       prefix: fix
-      prefix-development: chore
     # react and react-dom must carry the exact same version or react-dom throws
     # at mount, so bump them together in a single PR rather than in separate ones.
     groups:
@@ -43,7 +42,6 @@ updates:
       - jbrunner
     commit-message:
       prefix: fix
-      prefix-development: chore
 
   - package-ecosystem: docker
     directory: "/"
