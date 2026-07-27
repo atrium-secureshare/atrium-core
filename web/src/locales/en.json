@@ -1,0 +1,115 @@
+{
+  "header": {
+    "home": "Home",
+    "accountMenu": "Account menu",
+    "logout": "Sign out"
+  },
+  "theme": {
+    "toDark": "Switch to dark theme",
+    "toLight": "Switch to light theme"
+  },
+  "language": {
+    "label": "Language",
+    "de": "Deutsch",
+    "fr": "Français",
+    "it": "Italiano",
+    "en": "English"
+  },
+  "shares": {
+    "title": "My shares",
+    "loading": "Loading shares …",
+    "emptyTitle": "No shares",
+    "emptyBody": "No files or folders have been shared with you yet.",
+    "downloadStarted": "Download of “{{name}}” started",
+    "loadError": "The shares could not be loaded."
+  },
+  "shareList": {
+    "name": "Name",
+    "access": "Access",
+    "downloads": "Downloads",
+    "expires": "Expires",
+    "action": "Action",
+    "aria": "Shared files and folders"
+  },
+  "shareRow": {
+    "folder": "Folder",
+    "openFolder": "Open folder: {{name}}",
+    "download": "Download: {{name}}",
+    "showDetails": "Show details: {{name}}"
+  },
+  "shareView": {
+    "loading": "Loading share …",
+    "folderLoadError": "The folder contents could not be loaded.",
+    "contentLoading": "Loading contents …"
+  },
+  "folderList": {
+    "empty": "This folder is empty.",
+    "aria": "Folder contents",
+    "openFolder": "Open folder: {{name}}",
+    "download": "Download: {{name}}",
+    "folder": "Folder",
+    "showDetails": "Show details: {{name}}",
+    "yourUpload": "Your upload"
+  },
+  "notFound": {
+    "title": "Share not found",
+    "body": "This share has expired or was revoked.",
+    "back": "To “My shares”"
+  },
+  "breadcrumb": {
+    "aria": "Path"
+  },
+  "fileDialog": {
+    "yourUpload": "Your upload",
+    "close": "Close dialog",
+    "permission": "Permission",
+    "sharedOn": "Shared on",
+    "downloads": "Downloads",
+    "expires": "Expires",
+    "download": "Download now"
+  },
+  "modeBanner": {
+    "read-only": "Read-only – you can view and download the files.",
+    "write-all": "Read & upload – you see all files and can upload new ones.",
+    "write-own": "Upload / read own – you see and download only your own files.",
+    "dropzone": "Dropzone – you can upload files but cannot view the contents."
+  },
+  "upload": {
+    "uploaded": "“{{name}}” uploaded",
+    "uploadFailed": "“{{name}}” could not be uploaded",
+    "title": "Upload files",
+    "busy": "“{{name}}” is uploading …",
+    "idle": "Drop files here or click to upload"
+  },
+  "tos": {
+    "loadError": "The terms of service could not be loaded.",
+    "saveError": "Your consent could not be saved.",
+    "title": "Terms of service",
+    "subtitle": "Please read and accept the terms to continue.",
+    "loading": "Loading terms of service …",
+    "saving": "Saving …",
+    "accept": "I agree"
+  },
+  "app": {
+    "loginFailedTitle": "Sign-in failed",
+    "loginRetry": "Try signing in again",
+    "notFoundTitle": "Page not found",
+    "home": "To the home page"
+  },
+  "errorBoundary": {
+    "title": "An error occurred",
+    "home": "To the home page"
+  },
+  "format": {
+    "modeReadOnly": "Read-only",
+    "modeWriteOwn": "Upload / read own",
+    "modeWriteAll": "Read & upload",
+    "modeDropzone": "Upload only",
+    "unlimited": "unlimited",
+    "expired": "expired",
+    "today": "today",
+    "daysRemaining_one": "{{count}} day left",
+    "daysRemaining_other": "{{count}} days left",
+    "file": "File"
+  }
+}

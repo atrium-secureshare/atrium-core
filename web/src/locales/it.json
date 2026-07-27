@@ -1,0 +1,115 @@
+{
+  "header": {
+    "home": "Alla pagina iniziale",
+    "accountMenu": "Menu account",
+    "logout": "Esci"
+  },
+  "theme": {
+    "toDark": "Passa al tema scuro",
+    "toLight": "Passa al tema chiaro"
+  },
+  "language": {
+    "label": "Lingua",
+    "de": "Deutsch",
+    "fr": "Français",
+    "it": "Italiano",
+    "en": "English"
+  },
+  "shares": {
+    "title": "Le mie condivisioni",
+    "loading": "Caricamento delle condivisioni …",
+    "emptyTitle": "Nessuna condivisione",
+    "emptyBody": "Nessun file o cartella è ancora stato condiviso con te.",
+    "downloadStarted": "Download di «{{name}}» avviato",
+    "loadError": "Impossibile caricare le condivisioni."
+  },
+  "shareList": {
+    "name": "Nome",
+    "access": "Accesso",
+    "downloads": "Download",
+    "expires": "Scade",
+    "action": "Azione",
+    "aria": "File e cartelle condivisi"
+  },
+  "shareRow": {
+    "folder": "Cartella",
+    "openFolder": "Apri cartella: {{name}}",
+    "download": "Scarica: {{name}}",
+    "showDetails": "Mostra dettagli: {{name}}"
+  },
+  "shareView": {
+    "loading": "Caricamento della condivisione …",
+    "folderLoadError": "Impossibile caricare il contenuto della cartella.",
+    "contentLoading": "Caricamento del contenuto …"
+  },
+  "folderList": {
+    "empty": "Questa cartella è vuota.",
+    "aria": "Contenuto della cartella",
+    "openFolder": "Apri cartella: {{name}}",
+    "download": "Scarica: {{name}}",
+    "folder": "Cartella",
+    "showDetails": "Mostra dettagli: {{name}}",
+    "yourUpload": "Il tuo caricamento"
+  },
+  "notFound": {
+    "title": "Condivisione non trovata",
+    "body": "Questa condivisione è scaduta o è stata revocata.",
+    "back": "A «Le mie condivisioni»"
+  },
+  "breadcrumb": {
+    "aria": "Percorso"
+  },
+  "fileDialog": {
+    "yourUpload": "Il tuo caricamento",
+    "close": "Chiudi finestra di dialogo",
+    "permission": "Autorizzazione",
+    "sharedOn": "Condiviso il",
+    "downloads": "Download",
+    "expires": "Scade",
+    "download": "Scarica ora"
+  },
+  "modeBanner": {
+    "read-only": "Sola lettura – puoi visualizzare e scaricare i file.",
+    "write-all": "Lettura e caricamento – vedi tutti i file e puoi caricarne di nuovi.",
+    "write-own": "Caricamento / lettura dei propri – vedi e scarichi solo i tuoi file.",
+    "dropzone": "Cartella di deposito – puoi caricare file ma non puoi vederne il contenuto."
+  },
+  "upload": {
+    "uploaded": "«{{name}}» caricato",
+    "uploadFailed": "«{{name}}» non è stato caricato",
+    "title": "Carica file",
+    "busy": "«{{name}}» in caricamento …",
+    "idle": "Trascina qui i file o fai clic per caricare"
+  },
+  "tos": {
+    "loadError": "Impossibile caricare i termini di servizio.",
+    "saveError": "Impossibile salvare il consenso.",
+    "title": "Termini di servizio",
+    "subtitle": "Leggi e accetta i termini per continuare.",
+    "loading": "Caricamento dei termini di servizio …",
+    "saving": "Salvataggio …",
+    "accept": "Accetto"
+  },
+  "app": {
+    "loginFailedTitle": "Accesso non riuscito",
+    "loginRetry": "Riprova ad accedere",
+    "notFoundTitle": "Pagina non trovata",
+    "home": "Alla pagina iniziale"
+  },
+  "errorBoundary": {
+    "title": "Si è verificato un errore",
+    "home": "Alla pagina iniziale"
+  },
+  "format": {
+    "modeReadOnly": "Sola lettura",
+    "modeWriteOwn": "Caricamento / lettura dei propri",
+    "modeWriteAll": "Lettura e caricamento",
+    "modeDropzone": "Solo caricamento",
+    "unlimited": "illimitato",
+    "expired": "scaduto",
+    "today": "oggi",
+    "daysRemaining_one": "ancora {{count}} giorno",
+    "daysRemaining_other": "ancora {{count}} giorni",
+    "file": "File"
+  }
+}

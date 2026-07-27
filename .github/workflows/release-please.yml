@@ -1,0 +1,24 @@
+name: release-please
+
+# Maintains a release PR from Conventional Commits on main. Merging that PR
+# tags the release, creates the GitHub Release and updates CHANGELOG.md; the
+# published release then triggers build.yml (image → ghcr).
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: release-please-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v5
+        with:
+          release-type: go

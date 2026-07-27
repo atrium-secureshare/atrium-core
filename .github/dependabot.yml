@@ -1,0 +1,57 @@
+version: 2
+
+# Commit-message prefixes feed release-please: runtime-affecting updates use
+# "fix" (→ patch release, shows in the changelog), pure tooling uses "chore"
+# (no release). npm dev-dependencies are demoted to "chore" via
+# prefix-development. Every PR is assigned to jbrunner; the auto-merge workflow
+# merges semver-minor/patch once CI is green.
+updates:
+  - package-ecosystem: gomod
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    assignees:
+      - jbrunner
+    commit-message:
+      prefix: fix
+
+  - package-ecosystem: npm
+    directory: "/web"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    assignees:
+      - jbrunner
+    commit-message:
+      prefix: fix
+      prefix-development: chore
+
+  - package-ecosystem: npm
+    directory: "/e2e"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    assignees:
+      - jbrunner
+    commit-message:
+      prefix: fix
+      prefix-development: chore
+
+  - package-ecosystem: docker
+    directory: "/"
+    schedule:
+      interval: weekly
+    assignees:
+      - jbrunner
+    commit-message:
+      prefix: fix
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    assignees:
+      - jbrunner
+    commit-message:
+      prefix: chore

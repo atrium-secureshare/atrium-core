@@ -1,0 +1,27 @@
+# Go build output
+/bin/
+/dist/
+/out/
+/atrium
+*.exe
+*.test
+*.out
+
+# Frontend (web/)
+/web/node_modules/
+/web/dist/
+
+# Embedded frontend build (produced by `npm run build`, embedded by internal/webui).
+# Only the placeholder is tracked so a plain `go build` compiles without a build.
+/internal/webui/dist/*
+!/internal/webui/dist/.gitkeep
+
+# E2E (Playwright)
+/e2e/node_modules/
+/e2e/test-results/
+/e2e/playwright-report/
+/e2e/.playwright/
+
+# Local env / secrets
+.env
+*.local

@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" width="900" height="620" role="img" aria-label="Atrium network zones: external recipients reach the Atrium Core gateway in the DMZ over HTTPS with OIDC login and MFA; the core proxies file streams across a firewall to the Atrium storage plugin and the storage backend (for example Nextcloud) in the trusted internal LAN, so that backend need not be exposed to the internet.">
+  <style>
+    text { font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+    .zlabel  { font-size: 12px; font-weight: 700; letter-spacing: .08em; }
+    .title   { font-size: 15px; font-weight: 600; fill: #1e293b; }
+    .sub     { font-size: 12px; fill: #64748b; }
+    .elabel  { font-size: 12px; fill: #475569; }
+    .num     { font-size: 12px; font-weight: 700; fill: #ffffff; }
+    .fwlabel { font-size: 11px; font-weight: 700; letter-spacing: .1em; fill: #b91c1c; }
+    .cap     { font-size: 12.5px; font-style: italic; fill: #475569; }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <!-- ===== panel ===== -->
+  <rect x="12" y="12" width="876" height="596" rx="18" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+
+  <!-- ===== zone backgrounds (drawn first, behind all content) ===== -->
+  <rect x="36" y="40"  width="828" height="104" rx="12" fill="#fef2f2" stroke="#fecaca" stroke-width="1.5"/>
+  <rect x="36" y="168" width="828" height="150" rx="12" fill="#fffbeb" stroke="#fde68a" stroke-width="1.5"/>
+  <rect x="36" y="360" width="828" height="224" rx="12" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.5"/>
+  <text class="zlabel" fill="#b91c1c" x="54" y="66">PUBLIC INTERNET</text>
+  <text class="zlabel" fill="#b45309" x="54" y="194">DMZ (INTERNET-FACING)</text>
+  <text class="zlabel" fill="#15803d" x="54" y="386">INTERNAL NETWORK (TRUSTED, PRIVATE LAN)</text>
+
+  <!-- ===== firewall boundary ===== -->
+  <line x1="36" y1="358" x2="864" y2="358" stroke="#dc2626" stroke-width="2" stroke-dasharray="9 6"/>
+
+  <!-- ===== connectors ===== -->
+  <path d="M390 134 V205" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M512 254 H642" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M390 302 V417" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M512 459 H618" fill="none" stroke="#475569" stroke-width="2" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+
+  <!-- ===== cards ===== -->
+  <!-- external recipient -->
+  <rect x="262" y="82" width="256" height="52" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <rect x="284" y="97" width="24" height="16" rx="2" fill="none" stroke="#475569" stroke-width="1.6"/>
+  <path d="M296 113 v4 M289 121 h14" fill="none" stroke="#475569" stroke-width="1.6"/>
+  <text class="title" x="330" y="104">External recipient</text>
+  <text class="sub"   x="330" y="121">web browser, no local account</text>
+
+  <!-- Atrium Core (hero) -->
+  <rect x="268" y="210" width="244" height="92" rx="12" fill="#ffffff" stroke="#2563eb" stroke-width="2.5"/>
+  <g transform="translate(286,240) scale(1.75)"><path fill="#2563eb" d="M8 1 2 3.2v3.3c0 3.4 2.3 6.6 6 8 3.7-1.4 6-4.6 6-8V3.2L8 1zm0 1.6 4.5 1.6v2.3c0 2.6-1.7 5.1-4.5 6.3-2.8-1.2-4.5-3.7-4.5-6.3V4.2L8 2.6zM8 5a1.6 1.6 0 0 0-.6 3.1v1.5a.6.6 0 0 0 1.2 0V8.1A1.6 1.6 0 0 0 8 5z"/></g>
+  <text class="title" x="330" y="248">Atrium Core</text>
+  <text class="sub"   x="330" y="267">identity-aware gateway</text>
+  <text class="sub"   x="330" y="284">reverse proxy, sessions, ToS</text>
+
+  <!-- identity provider -->
+  <rect x="644" y="222" width="196" height="64" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <circle cx="666" cy="250" r="5" fill="none" stroke="#475569" stroke-width="1.6"/>
+  <path d="M671 250 h13 M679 250 v6 M684 250 v4" fill="none" stroke="#475569" stroke-width="1.6"/>
+  <text class="title" x="694" y="248">Identity provider</text>
+  <text class="sub"   x="694" y="266">OIDC, MFA (e.g. Keycloak)</text>
+
+  <!-- Atrium plugin -->
+  <rect x="270" y="422" width="240" height="74" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <g fill="#475569">
+    <rect x="286" y="451" width="8" height="8" rx="1.5"/>
+    <rect x="298" y="451" width="8" height="8" rx="1.5"/>
+    <rect x="286" y="463" width="8" height="8" rx="1.5"/>
+    <rect x="298" y="463" width="8" height="8" rx="1.5"/>
+  </g>
+  <text class="title" x="332" y="452">Atrium plugin</text>
+  <text class="sub"   x="332" y="470">backend connector</text>
+  <text class="sub"   x="332" y="486">separate repo</text>
+
+  <!-- storage backend -->
+  <rect x="620" y="422" width="220" height="74" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <path d="M634 452 a11 4 0 0 1 22 0 v16 a11 4 0 0 1 -22 0 z" fill="none" stroke="#475569" stroke-width="1.6"/>
+  <path d="M634 460 a11 4 0 0 0 22 0" fill="none" stroke="#475569" stroke-width="1.6"/>
+  <text class="title" x="668" y="452">Storage backend</text>
+  <text class="sub"   x="668" y="470">on-prem / private-cloud</text>
+  <text class="sub"   x="668" y="486">e.g. Nextcloud</text>
+
+  <!-- ===== edge labels, step badges & caption (drawn last, always on top) ===== -->
+  <text class="fwlabel" x="60" y="352">FIREWALL, TRUST BOUNDARY</text>
+  <text class="elabel" x="402" y="180">HTTPS, OIDC login</text>
+  <text class="elabel" x="402" y="197">MFA + ToS accept</text>
+  <text class="elabel" x="578" y="245" text-anchor="middle">OIDC / MFA</text>
+  <text class="elabel" x="402" y="392">signed ES256 JWT (30&#8201;s)</text>
+  <text class="elabel" x="402" y="409">stream proxy, no buffering</text>
+  <text class="elabel" x="565" y="450" text-anchor="middle">read / write</text>
+
+  <circle cx="390" cy="150" r="11" fill="#475569"/>
+  <text class="num" x="390" y="154" text-anchor="middle">1</text>
+  <circle cx="390" cy="318" r="11" fill="#475569"/>
+  <text class="num" x="390" y="322" text-anchor="middle">2</text>
+
+  <text class="cap" x="450" y="560" text-anchor="middle">The storage backend must not be exposed to the public internet. Only Atrium Core is.</text>
+</svg>

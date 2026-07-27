@@ -1,0 +1,115 @@
+{
+  "header": {
+    "home": "Zur Startseite",
+    "accountMenu": "Kontomenü",
+    "logout": "Abmelden"
+  },
+  "theme": {
+    "toDark": "Zu dunklem Design wechseln",
+    "toLight": "Zu hellem Design wechseln"
+  },
+  "language": {
+    "label": "Sprache",
+    "de": "Deutsch",
+    "fr": "Français",
+    "it": "Italiano",
+    "en": "English"
+  },
+  "shares": {
+    "title": "Meine Freigaben",
+    "loading": "Freigaben werden geladen …",
+    "emptyTitle": "Keine Freigaben",
+    "emptyBody": "Es wurden noch keine Dateien oder Ordner mit Ihnen geteilt.",
+    "downloadStarted": "Download von «{{name}}» gestartet",
+    "loadError": "Die Freigaben konnten nicht geladen werden."
+  },
+  "shareList": {
+    "name": "Name",
+    "access": "Zugriff",
+    "downloads": "Downloads",
+    "expires": "Läuft ab",
+    "action": "Aktion",
+    "aria": "Freigegebene Dateien und Ordner"
+  },
+  "shareRow": {
+    "folder": "Ordner",
+    "openFolder": "Ordner öffnen: {{name}}",
+    "download": "Herunterladen: {{name}}",
+    "showDetails": "Details anzeigen: {{name}}"
+  },
+  "shareView": {
+    "loading": "Freigabe wird geladen …",
+    "folderLoadError": "Der Ordnerinhalt konnte nicht geladen werden.",
+    "contentLoading": "Inhalt wird geladen …"
+  },
+  "folderList": {
+    "empty": "Dieser Ordner ist leer.",
+    "aria": "Ordnerinhalt",
+    "openFolder": "Ordner öffnen: {{name}}",
+    "download": "Herunterladen: {{name}}",
+    "folder": "Ordner",
+    "showDetails": "Details anzeigen: {{name}}",
+    "yourUpload": "Ihr Upload"
+  },
+  "notFound": {
+    "title": "Freigabe nicht gefunden",
+    "body": "Diese Freigabe ist abgelaufen oder wurde zurückgezogen.",
+    "back": "Zu «Meine Freigaben»"
+  },
+  "breadcrumb": {
+    "aria": "Pfad"
+  },
+  "fileDialog": {
+    "yourUpload": "Ihr Upload",
+    "close": "Dialog schließen",
+    "permission": "Berechtigung",
+    "sharedOn": "Freigegeben am",
+    "downloads": "Downloads",
+    "expires": "Läuft ab",
+    "download": "Jetzt herunterladen"
+  },
+  "modeBanner": {
+    "read-only": "Nur Lesen – Sie können die Dateien ansehen und herunterladen.",
+    "write-all": "Lesen & Hochladen – Sie sehen alle Dateien und können neue hochladen.",
+    "write-own": "Hochladen / Eigene lesen – Sie sehen und laden nur Ihre eigenen Dateien.",
+    "dropzone": "Dropzone – Sie können Dateien hochladen, den Inhalt aber nicht einsehen."
+  },
+  "upload": {
+    "uploaded": "«{{name}}» hochgeladen",
+    "uploadFailed": "«{{name}}» konnte nicht hochgeladen werden",
+    "title": "Dateien hochladen",
+    "busy": "«{{name}}» wird hochgeladen …",
+    "idle": "Dateien hier ablegen oder klicken zum Hochladen"
+  },
+  "tos": {
+    "loadError": "Die Nutzungsbedingungen konnten nicht geladen werden.",
+    "saveError": "Die Zustimmung konnte nicht gespeichert werden.",
+    "title": "Nutzungsbedingungen",
+    "subtitle": "Bitte lesen und akzeptieren Sie die Bedingungen, um fortzufahren.",
+    "loading": "Nutzungsbedingungen werden geladen …",
+    "saving": "Wird gespeichert …",
+    "accept": "Ich stimme zu"
+  },
+  "app": {
+    "loginFailedTitle": "Anmeldung fehlgeschlagen",
+    "loginRetry": "Anmeldung wiederholen",
+    "notFoundTitle": "Seite nicht gefunden",
+    "home": "Zur Startseite"
+  },
+  "errorBoundary": {
+    "title": "Ein Fehler ist aufgetreten",
+    "home": "Zur Startseite"
+  },
+  "format": {
+    "modeReadOnly": "Nur Lesen",
+    "modeWriteOwn": "Hochladen / Eigene lesen",
+    "modeWriteAll": "Lesen & Hochladen",
+    "modeDropzone": "Nur Hochladen",
+    "unlimited": "unbegrenzt",
+    "expired": "abgelaufen",
+    "today": "heute",
+    "daysRemaining_one": "noch {{count}} Tag",
+    "daysRemaining_other": "noch {{count}} Tage",
+    "file": "Datei"
+  }
+}

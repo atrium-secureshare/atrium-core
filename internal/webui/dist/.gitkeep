@@ -1,0 +1,2 @@
+Placeholder so `go build` compiles without a frontend build.
+The real bundle is produced by `npm run build` (web/) and embedded by internal/webui.

@@ -1,0 +1,13 @@
+{
+  "name": "atrium-e2e",
+  "private": true,
+  "description": "Tier-1 integration tests: Playwright against the core gateway with a mock OIDC provider and a stub provider (hermetic, no Keycloak/Nextcloud).",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0"
+  }
+}

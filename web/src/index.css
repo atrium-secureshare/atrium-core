@@ -1,0 +1,145 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+/* Semantic names follow the shadcn/ui convention so its components drop in
+   unchanged; colours are white-label overridable at runtime. */
+:root {
+  --radius: 0.625rem;
+
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #1d4ed8;
+  --primary-foreground: #ffffff;
+  --secondary: #f2f5f9;
+  --secondary-foreground: #0f172a;
+  --muted: #f2f5f9;
+  --muted-foreground: #64748b;
+  --accent: #eaf0fe;
+  --accent-foreground: #1d4ed8;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --border: #e4e8ef;
+  --input: #cbd5e1;
+  --ring: #1d4ed8;
+
+  --surface-3: #eaeef4;
+  /* File-icon chip derived from --accent-foreground so it tracks the white-label
+     accent at runtime rather than clashing with it. */
+  --file-icon: color-mix(in oklab, var(--accent-foreground) 28%, var(--muted-foreground));
+  --file-chip: color-mix(in oklab, var(--accent-foreground) 10%, var(--surface-3));
+  --text-2: #4a5568;
+  --text-3: #64748b;
+  --primary-hover: #1e40af;
+  --warn: #b45309;
+  --warn-weak: #fdf1e3;
+
+  --shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 6px 20px -8px rgba(15, 23, 42, 0.18);
+  --shadow-lg: 0 28px 64px -22px rgba(15, 23, 42, 0.42);
+}
+
+.dark {
+  --background: #161c2a;
+  --foreground: #e7ecf4;
+  --card: #1e2634;
+  --card-foreground: #e7ecf4;
+  --popover: #1e2634;
+  --popover-foreground: #e7ecf4;
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --secondary: #27303f;
+  --secondary-foreground: #e7ecf4;
+  --muted: #27303f;
+  --muted-foreground: #98a5ba;
+  --accent: #22304a;
+  --accent-foreground: #60a5fa;
+  --destructive: #f87171;
+  --destructive-foreground: #161c2a;
+  --border: #2d3646;
+  --input: #3d4759;
+  --ring: #60a5fa;
+
+  --surface-3: #31394b;
+  --file-icon: color-mix(in oklab, var(--accent-foreground) 28%, var(--muted-foreground));
+  --file-chip: color-mix(in oklab, var(--accent-foreground) 10%, var(--surface-3));
+  --text-2: #9fabc0;
+  --text-3: #98a5ba;
+  --primary-hover: #60a5fa;
+  --warn: #f59e0b;
+  --warn-weak: #241a0c;
+
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 30px 68px -22px rgba(0, 0, 0, 0.72);
+}
+
+@theme inline {
+  --font-sans:
+    'Public Sans', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 4px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-warn: var(--warn);
+  --color-warn-weak: var(--warn-weak);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@keyframes dialog-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

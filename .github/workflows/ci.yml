@@ -1,0 +1,75 @@
+name: CI
+
+# gofmt / vet / unit tests, license policy and the Tier-1 Playwright suite.
+# Runs on pull requests only (including Dependabot and release-please PRs); the
+# default branch is gated by these same checks via branch protection. Mirrors
+# the former .gitlab-ci.yml test stage.
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+      - name: gofmt
+        run: |
+          unformatted="$(gofmt -l .)"
+          if [ -n "$unformatted" ]; then
+            echo "unformatted files:"; echo "$unformatted"; exit 1
+          fi
+      - run: go vet ./...
+      - run: go test ./...
+
+  license-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+      - run: go install github.com/google/go-licenses@v1.6.0
+      - run: go-licenses check ./cmd/atrium --disallowed_types=forbidden,restricted,reciprocal
+
+  e2e:
+    runs-on: ubuntu-latest
+    env:
+      GOTOOLCHAIN: local
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: |
+            web/package-lock.json
+            e2e/package-lock.json
+      - run: npm --prefix web ci
+      - run: npm --prefix web run build
+      - run: go build -o /tmp/atrium-e2e-bin ./cmd/atrium-e2e
+      - run: npm --prefix e2e ci
+      - run: cd e2e && npx playwright install --with-deps chromium
+      - name: Run Playwright suite
+        run: E2E_SKIP_BUILD=1 npm --prefix e2e test
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: playwright-report
+          path: |
+            e2e/playwright-report/
+            e2e/test-results/
+          retention-days: 7

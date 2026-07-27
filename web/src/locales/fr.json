@@ -1,0 +1,115 @@
+{
+  "header": {
+    "home": "Vers la page d’accueil",
+    "accountMenu": "Menu du compte",
+    "logout": "Se déconnecter"
+  },
+  "theme": {
+    "toDark": "Passer au thème sombre",
+    "toLight": "Passer au thème clair"
+  },
+  "language": {
+    "label": "Langue",
+    "de": "Deutsch",
+    "fr": "Français",
+    "it": "Italiano",
+    "en": "English"
+  },
+  "shares": {
+    "title": "Mes partages",
+    "loading": "Chargement des partages …",
+    "emptyTitle": "Aucun partage",
+    "emptyBody": "Aucun fichier ni dossier n’a encore été partagé avec vous.",
+    "downloadStarted": "Téléchargement de « {{name}} » démarré",
+    "loadError": "Les partages n’ont pas pu être chargés."
+  },
+  "shareList": {
+    "name": "Nom",
+    "access": "Accès",
+    "downloads": "Téléchargements",
+    "expires": "Expire",
+    "action": "Action",
+    "aria": "Fichiers et dossiers partagés"
+  },
+  "shareRow": {
+    "folder": "Dossier",
+    "openFolder": "Ouvrir le dossier : {{name}}",
+    "download": "Télécharger : {{name}}",
+    "showDetails": "Afficher les détails : {{name}}"
+  },
+  "shareView": {
+    "loading": "Chargement du partage …",
+    "folderLoadError": "Le contenu du dossier n’a pas pu être chargé.",
+    "contentLoading": "Chargement du contenu …"
+  },
+  "folderList": {
+    "empty": "Ce dossier est vide.",
+    "aria": "Contenu du dossier",
+    "openFolder": "Ouvrir le dossier : {{name}}",
+    "download": "Télécharger : {{name}}",
+    "folder": "Dossier",
+    "showDetails": "Afficher les détails : {{name}}",
+    "yourUpload": "Votre envoi"
+  },
+  "notFound": {
+    "title": "Partage introuvable",
+    "body": "Ce partage a expiré ou a été révoqué.",
+    "back": "Vers « Mes partages »"
+  },
+  "breadcrumb": {
+    "aria": "Chemin"
+  },
+  "fileDialog": {
+    "yourUpload": "Votre envoi",
+    "close": "Fermer la boîte de dialogue",
+    "permission": "Autorisation",
+    "sharedOn": "Partagé le",
+    "downloads": "Téléchargements",
+    "expires": "Expire",
+    "download": "Télécharger maintenant"
+  },
+  "modeBanner": {
+    "read-only": "Lecture seule – vous pouvez consulter et télécharger les fichiers.",
+    "write-all": "Lecture et envoi – vous voyez tous les fichiers et pouvez en envoyer de nouveaux.",
+    "write-own": "Envoi / lecture des siens – vous ne voyez et ne téléchargez que vos propres fichiers.",
+    "dropzone": "Dépôt – vous pouvez envoyer des fichiers mais ne pouvez pas voir le contenu."
+  },
+  "upload": {
+    "uploaded": "« {{name}} » envoyé",
+    "uploadFailed": "« {{name}} » n’a pas pu être envoyé",
+    "title": "Envoyer des fichiers",
+    "busy": "« {{name}} » en cours d’envoi …",
+    "idle": "Déposez les fichiers ici ou cliquez pour les envoyer"
+  },
+  "tos": {
+    "loadError": "Les conditions d’utilisation n’ont pas pu être chargées.",
+    "saveError": "Votre consentement n’a pas pu être enregistré.",
+    "title": "Conditions d’utilisation",
+    "subtitle": "Veuillez lire et accepter les conditions pour continuer.",
+    "loading": "Chargement des conditions d’utilisation …",
+    "saving": "Enregistrement …",
+    "accept": "J’accepte"
+  },
+  "app": {
+    "loginFailedTitle": "Échec de la connexion",
+    "loginRetry": "Réessayer la connexion",
+    "notFoundTitle": "Page introuvable",
+    "home": "Vers la page d’accueil"
+  },
+  "errorBoundary": {
+    "title": "Une erreur s’est produite",
+    "home": "Vers la page d’accueil"
+  },
+  "format": {
+    "modeReadOnly": "Lecture seule",
+    "modeWriteOwn": "Envoi / lecture des siens",
+    "modeWriteAll": "Lecture et envoi",
+    "modeDropzone": "Envoi uniquement",
+    "unlimited": "illimité",
+    "expired": "expiré",
+    "today": "aujourd’hui",
+    "daysRemaining_one": "{{count}} jour restant",
+    "daysRemaining_other": "{{count}} jours restants",
+    "file": "Fichier"
+  }
+}
