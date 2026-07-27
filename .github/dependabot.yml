@@ -26,6 +26,13 @@ updates:
     commit-message:
       prefix: fix
       prefix-development: chore
+    # react and react-dom must carry the exact same version or react-dom throws
+    # at mount, so bump them together in a single PR rather than in separate ones.
+    groups:
+      react:
+        patterns:
+          - react
+          - react-dom
 
   - package-ecosystem: npm
     directory: "/e2e"
