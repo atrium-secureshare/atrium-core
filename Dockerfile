@@ -2,7 +2,7 @@
 
 # Frontend stage: build the recipient SPA. Vite emits into internal/webui/dist
 # (see web/vite.config.ts), which the Go build then embeds into the binary.
-FROM node:24 AS web
+FROM node:26 AS web
 WORKDIR /src/web
 COPY web/package.json web/package-lock.json ./
 RUN npm ci
