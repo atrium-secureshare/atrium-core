@@ -31,12 +31,14 @@ other backends are a matter of writing another plugin.
   share is addressed to a specific recipient by email, and access requires that
   person to authenticate.
 - **OIDC first.** Authentication and credential management are delegated
-  entirely to an upstream OpenID Connect provider. Atrium can optionally
-  enforce that the provider required MFA for the session.
+  entirely to an upstream OpenID Connect provider.
 - **Optional policy acceptance.** Recipients can be required to accept a
   configured Terms of Service, shown as a blocking consent gate, before any
   file is served. This is opt-in and can also be delegated to the identity
   provider instead.
+- **Optional MFA enforcement.** Atrium can require multi-factor authentication,
+  matching the session's `acr` claim against a configured set of accepted values
+  and failing the login otherwise.
 - **Granular share attributes.** Shares carry expiry dates and maximum-download
   caps, combined with scope-specific access:
   - **File shares** are read-only downloads.
