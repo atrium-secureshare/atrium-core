@@ -13,7 +13,7 @@ RUN npm run build
 RUN node scripts/collect-licenses.mjs > third-party-npm.txt
 
 # Build stage: compile a static binary with the embedded frontend.
-FROM golang:1.26 AS build
+FROM golang:1.27 AS build
 WORKDIR /src
 COPY go.mod go.sum ./
 RUN go mod download
