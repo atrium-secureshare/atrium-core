@@ -46,6 +46,9 @@ export default defineConfig({
       // Enabling the consent gate lets the ToS specs run against the same server;
       // every other spec accepts it in the fixture.
       TOS_PATH: 'e2e/testdata/tos.md',
+      // A 1 KB cap keeps the oversize-upload spec at a 2 KB fixture; every other
+      // upload here is a few bytes.
+      MAX_UPLOAD_SIZE: '1024',
     },
   },
 })

@@ -77,6 +77,7 @@
   "upload": {
     "uploaded": "«{{name}}» caricato",
     "uploadFailed": "«{{name}}» non è stato caricato",
+    "tooLarge": "«{{name}}» supera la dimensione massima di {{size}}",
     "title": "Carica file",
     "busy": "«{{name}}» in caricamento …",
     "idle": "Trascina qui i file o fai clic per caricare"

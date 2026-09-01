@@ -13,6 +13,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/atrium-secureshare/atrium-core/internal/api"
@@ -82,6 +83,11 @@ func run(logger *slog.Logger) error {
 	if path := os.Getenv("TOS_PATH"); path != "" {
 		cfg.TOS = config.TOSConfig{Enabled: true, Path: path, Version: os.Getenv("TOS_VERSION")}
 	}
+	// A spec can shrink the upload cap so an oversize case needs a small fixture
+	// rather than a file above the production default.
+	if n, err := strconv.ParseInt(os.Getenv("MAX_UPLOAD_SIZE"), 10, 64); err == nil && n > 0 {
+		cfg.Provider.MaxUploadSize = n
+	}
 
 	oidcAuth, err := auth.NewOIDCAuth(context.Background(), cfg, logger)
 	if err != nil {
@@ -100,7 +106,7 @@ func run(logger *slog.Logger) error {
 		}
 	}
 
-	handler := api.Handler(oidcAuth, tosMgr, providerSvc, streamProxy, "", webui.Brand{}, false, logger)
+	handler := api.Handler(oidcAuth, tosMgr, providerSvc, streamProxy, "", webui.ShellConfig{MaxUploadSize: cfg.Provider.MaxUploadSize}, false, logger)
 
 	// One test-only control route so Playwright can reset the fixture between
 	// tests over the same origin (the stub provider's port is unreachable from

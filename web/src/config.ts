@@ -9,9 +9,14 @@ export interface BrandConfig {
   defaultTheme: 'light' | 'dark'
 }
 
+// The server settings injected alongside the brand, mirroring webui.ShellConfig.
+interface ShellConfig extends BrandConfig {
+  maxUploadSize: number
+}
+
 declare global {
   interface Window {
-    __ATRIUM__?: Partial<BrandConfig>
+    __ATRIUM__?: Partial<ShellConfig>
   }
 }
 
@@ -21,4 +26,12 @@ const DEFAULTS: BrandConfig = {
   defaultTheme: 'light',
 }
 
-export const brand: BrandConfig = { ...DEFAULTS, ...(window.__ATRIUM__ ?? {}) }
+const { maxUploadSize: injectedMaxUploadSize, ...injectedBrand } =
+  window.__ATRIUM__ ?? {}
+
+export const brand: BrandConfig = { ...DEFAULTS, ...injectedBrand }
+
+// The upload limit the server enforces, in bytes. Deliberately without a default:
+// where nothing is injected (the Vite dev server) the client skips its own check
+// and leaves the verdict to the server rather than inventing a limit.
+export const maxUploadSize: number | undefined = injectedMaxUploadSize

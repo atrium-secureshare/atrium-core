@@ -77,6 +77,7 @@
   "upload": {
     "uploaded": "“{{name}}” uploaded",
     "uploadFailed": "“{{name}}” could not be uploaded",
+    "tooLarge": "“{{name}}” exceeds the maximum size of {{size}}",
     "title": "Upload files",
     "busy": "“{{name}}” is uploading …",
     "idle": "Drop files here or click to upload"

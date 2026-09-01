@@ -1,7 +1,9 @@
 import { useRef, useState } from 'react'
 import { UploadCloud } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { uploadFile } from '@/lib/api'
+import { ApiError, uploadFile } from '@/lib/api'
+import { maxUploadSize } from '@/config'
+import { formatSize } from '@/lib/format'
 import { cn } from '@/lib/utils'
 
 interface Props {
@@ -30,17 +32,35 @@ export function UploadDropzone({
     null,
   )
 
+  // The size verdict reads the same whether the client caught it or the server
+  // answered 413. Without an injected limit (the Vite dev server) the message has
+  // no bound to state, so the generic failure stays.
+  function tooLargeToast(name: string): string {
+    if (maxUploadSize === undefined) return t('upload.uploadFailed', { name })
+    return t('upload.tooLarge', { name, size: formatSize(maxUploadSize) })
+  }
+
   async function handleFiles(files: FileList | null) {
     if (!files || files.length === 0 || busy) return
     for (const file of Array.from(files)) {
+      // Rejecting here spares the transfer entirely; the server enforces the same
+      // limit and the 413 below covers whatever this check cannot see.
+      if (maxUploadSize !== undefined && file.size > maxUploadSize) {
+        onToast(tooLargeToast(file.name))
+        continue
+      }
       setBusy({ name: file.name, fraction: 0 })
       try {
         await uploadFile(shareId, file, path, (fraction) =>
           setBusy({ name: file.name, fraction }),
         )
         onToast(t('upload.uploaded', { name: file.name }))
-      } catch {
-        onToast(t('upload.uploadFailed', { name: file.name }))
+      } catch (err) {
+        onToast(
+          err instanceof ApiError && err.status === 413
+            ? tooLargeToast(file.name)
+            : t('upload.uploadFailed', { name: file.name }),
+        )
       }
     }
     setBusy(null)

@@ -19,8 +19,9 @@ import (
 var embedded embed.FS
 
 // Brand carries the optional white-label values injected into index.html. Text
-// and theme values are emitted as window.__ATRIUM__ JSON; AccentColor is applied
-// separately as a CSS override (see injectBrand), so it is not part of the JSON.
+// and theme values are emitted as part of the window.__ATRIUM__ JSON; AccentColor
+// is applied separately as a CSS override (see injectConfig), so it is not part
+// of the JSON.
 type Brand struct {
 	Name         string `json:"brandName,omitempty"`
 	Sub          string `json:"brandSub,omitempty"`
@@ -30,12 +31,23 @@ type Brand struct {
 	AccentColor string `json:"-"`
 }
 
+// ShellConfig is what the shell needs before its first API call: the white-label
+// brand plus the server settings the client applies on its own. It is emitted as
+// one flat window.__ATRIUM__ object, so a setting that is global (not per share)
+// costs no request.
+type ShellConfig struct {
+	Brand
+	// MaxUploadSize lets the client reject an oversize file before sending it,
+	// mirroring the limit the upload endpoint enforces anyway.
+	MaxUploadSize int64 `json:"maxUploadSize,omitempty"`
+}
+
 // Handler serves the SPA: real files are served directly with long-lived caching,
 // any other path falls back to index.html. It returns a 404-only handler when the
 // bundle is absent, so API and auth routes still work. The second return value is
 // the CSP script-src hashes for the shell's inline scripts, so the caller can
 // permit exactly them without 'unsafe-inline'; nil when no shell is served.
-func Handler(brand Brand) (http.Handler, []string) {
+func Handler(cfg ShellConfig) (http.Handler, []string) {
 	dist, err := fs.Sub(embedded, "dist")
 	if err != nil {
 		return http.NotFoundHandler(), nil
@@ -46,7 +58,7 @@ func Handler(brand Brand) (http.Handler, []string) {
 	}
 
 	index, _ := fs.ReadFile(dist, "index.html")
-	index = injectBrand(index, brand)
+	index = injectConfig(index, cfg)
 	scriptHashes := inlineScriptHashes(index)
 	fileServer := http.FileServer(http.FS(dist))
 
@@ -116,31 +128,29 @@ func inlineScriptHashes(html []byte) []string {
 	return hashes
 }
 
-// injectBrand splices the white-label brand into index.html. Text/theme values go
+// injectConfig splices the shell configuration into index.html. The values go
 // into a window.__ATRIUM__ script after <head>, so they exist before the pre-paint
 // theme script; encoding/json's HTML escaping renders "</script>" harmless. The
 // accent goes into a :root override before </head> (after the stylesheet, so it
 // wins on source order). Each part is a no-op when unset, so the stock shell is
 // served verbatim.
-func injectBrand(index []byte, brand Brand) []byte {
+func injectConfig(index []byte, cfg ShellConfig) []byte {
 	s := string(index)
-	if script := brandScript(brand); script != "" {
+	if script := configScript(cfg); script != "" {
 		s = spliceAfter(s, "<head>", script)
 	}
-	if style := accentStyle(brand.AccentColor); style != "" {
+	if style := accentStyle(cfg.AccentColor); style != "" {
 		s = spliceBefore(s, "</head>", style)
 	}
 	return []byte(s)
 }
 
-// brandScript builds the window.__ATRIUM__ script for the text/theme values, or
-// "" when none is set.
-func brandScript(brand Brand) string {
-	if brand.Name == "" && brand.Sub == "" && brand.DefaultTheme == "" {
-		return ""
-	}
-	data, err := json.Marshal(brand)
-	if err != nil {
+// configScript builds the window.__ATRIUM__ script, or "" when every field an
+// omitempty tag covers is unset. Marshalling to "{}" is the check itself, so a
+// new field needs no second place to declare it.
+func configScript(cfg ShellConfig) string {
+	data, err := json.Marshal(cfg)
+	if err != nil || string(data) == "{}" {
 		return ""
 	}
 	return "\n    <script>window.__ATRIUM__=" + string(data) + "</script>"

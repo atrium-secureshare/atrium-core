@@ -46,14 +46,14 @@ type ProviderService interface {
 // Handler builds the gateway's root HTTP handler. The security boundary is the
 // /api/ subtree, gated deny-by-default by RequireAuth -> RequireTOS, so any route
 // added under /api/ is protected automatically.
-func Handler(oidc *auth.OIDCAuth, tosMgr *tos.Manager, providerSvc ProviderService, streamProxy *proxy.Proxy, brandingDir string, brand webui.Brand, secureTransport bool, logger *slog.Logger) http.Handler {
+func Handler(oidc *auth.OIDCAuth, tosMgr *tos.Manager, providerSvc ProviderService, streamProxy *proxy.Proxy, brandingDir string, shell webui.ShellConfig, secureTransport bool, logger *slog.Logger) http.Handler {
 	mux := http.NewServeMux()
 
 	// The embedded SPA is the all-methods root fallback; more specific patterns
 	// (and "/api/") take precedence. Registering it without a method avoids
 	// conflicting with the all-methods "/api/" subtree, and it reports its inline
 	// script hashes so the CSP can permit exactly them.
-	spa, scriptHashes := webui.Handler(brand)
+	spa, scriptHashes := webui.Handler(shell)
 	mux.Handle("/", spa)
 	// White-label assets served from BRANDING_DIR with embedded defaults; more
 	// specific than "/", so it wins over the SPA fallback.

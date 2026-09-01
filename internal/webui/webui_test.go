@@ -42,15 +42,15 @@ func TestShellStatus(t *testing.T) {
 	}
 }
 
-func TestInjectBrandNoopWhenEmpty(t *testing.T) {
-	out := injectBrand([]byte(sampleIndex), Brand{})
+func TestInjectConfigNoopWhenEmpty(t *testing.T) {
+	out := injectConfig([]byte(sampleIndex), ShellConfig{})
 	if string(out) != sampleIndex {
 		t.Fatalf("empty brand must serve index verbatim, got:\n%s", out)
 	}
 }
 
-func TestInjectBrandInsertsTextConfig(t *testing.T) {
-	out := string(injectBrand([]byte(sampleIndex), Brand{Name: "Acme", DefaultTheme: "dark"}))
+func TestInjectConfigInsertsTextConfig(t *testing.T) {
+	out := string(injectConfig([]byte(sampleIndex), ShellConfig{Brand: Brand{Name: "Acme", DefaultTheme: "dark"}}))
 
 	if !strings.Contains(out, `window.__ATRIUM__=`) {
 		t.Fatalf("injected script missing:\n%s", out)
@@ -79,8 +79,31 @@ func TestInjectBrandInsertsTextConfig(t *testing.T) {
 	}
 }
 
-func TestInjectBrandAccentStyle(t *testing.T) {
-	out := string(injectBrand([]byte(sampleIndex), Brand{AccentColor: "#2563eb"}))
+func TestInjectConfigInsertsMaxUploadSize(t *testing.T) {
+	// The limit reaches the client without an API call, so the dropzone can reject
+	// an oversize file before sending it. It is emitted flat, next to the brand.
+	out := string(injectConfig([]byte(sampleIndex), ShellConfig{
+		Brand:         Brand{Name: "Acme"},
+		MaxUploadSize: 104857600,
+	}))
+	for _, want := range []string{`"brandName":"Acme"`, `"maxUploadSize":104857600`} {
+		if !strings.Contains(out, want) {
+			t.Errorf("expected %s in output:\n%s", want, out)
+		}
+	}
+}
+
+func TestInjectConfigLimitOnlyStillInjects(t *testing.T) {
+	// Without any white-label value the shell still needs the limit, so the script
+	// must be emitted for the limit alone.
+	out := string(injectConfig([]byte(sampleIndex), ShellConfig{MaxUploadSize: 1024}))
+	if !strings.Contains(out, `window.__ATRIUM__={"maxUploadSize":1024}`) {
+		t.Fatalf("limit-only config must be injected:\n%s", out)
+	}
+}
+
+func TestInjectConfigAccentStyle(t *testing.T) {
+	out := string(injectConfig([]byte(sampleIndex), ShellConfig{Brand: Brand{AccentColor: "#2563eb"}}))
 
 	if !strings.Contains(out, "--primary:#2563eb") {
 		t.Fatalf("accent not mapped onto --primary:\n%s", out)
@@ -100,17 +123,17 @@ func TestInjectBrandAccentStyle(t *testing.T) {
 	}
 }
 
-func TestInjectBrandAccentShortHexNoTint(t *testing.T) {
+func TestInjectConfigAccentShortHexNoTint(t *testing.T) {
 	// A non-#rrggbb value carries its own alpha (or none); no 1f is appended.
-	out := string(injectBrand([]byte(sampleIndex), Brand{AccentColor: "#abc"}))
+	out := string(injectConfig([]byte(sampleIndex), ShellConfig{Brand: Brand{AccentColor: "#abc"}}))
 	if !strings.Contains(out, "--accent:#abc}") {
 		t.Fatalf("short hex must be used verbatim as the tint:\n%s", out)
 	}
 }
 
-func TestInjectBrandEscapesScriptClose(t *testing.T) {
+func TestInjectConfigEscapesScriptClose(t *testing.T) {
 	// A value containing </script> must not break out of the injected tag.
-	out := string(injectBrand([]byte(sampleIndex), Brand{Name: "</script><script>alert(1)</script>"}))
+	out := string(injectConfig([]byte(sampleIndex), ShellConfig{Brand: Brand{Name: "</script><script>alert(1)</script>"}}))
 	if strings.Contains(out, "</script><script>alert(1)") {
 		t.Fatalf("raw </script> leaked into the document:\n%s", out)
 	}
@@ -120,9 +143,9 @@ func TestInjectBrandEscapesScriptClose(t *testing.T) {
 	}
 }
 
-func TestInjectBrandNoAnchorReturnsInput(t *testing.T) {
+func TestInjectConfigNoAnchorReturnsInput(t *testing.T) {
 	const noHead = "<html><body>no head here</body></html>"
-	out := injectBrand([]byte(noHead), Brand{Name: "Acme", AccentColor: "#123456"})
+	out := injectConfig([]byte(noHead), ShellConfig{Brand: Brand{Name: "Acme", AccentColor: "#123456"}})
 	if string(out) != noHead {
 		t.Fatalf("missing anchors must return input unchanged, got:\n%s", out)
 	}
@@ -162,10 +185,10 @@ func TestInlineScriptHashes(t *testing.T) {
 	}
 }
 
-func TestInlineScriptHashesCoversInjectedBrandScript(t *testing.T) {
+func TestInlineScriptHashesCoversInjectedConfigScript(t *testing.T) {
 	// A brand adds the window.__ATRIUM__ inline script, so the served shell then
 	// carries two inline scripts and the CSP must permit both.
-	index := injectBrand([]byte(sampleIndex), Brand{Name: "Acme"})
+	index := injectConfig([]byte(sampleIndex), ShellConfig{Brand: Brand{Name: "Acme"}})
 	hashes := inlineScriptHashes(index)
 	if len(hashes) != 2 {
 		t.Fatalf("want 2 inline-script hashes with a brand set, got %d: %v", len(hashes), hashes)
@@ -176,7 +199,7 @@ func TestHandlerReturnsHashesForServedShell(t *testing.T) {
 	// The embedded dist is present only when the frontend has been built; when it
 	// has, Handler must report at least the theme-script hash so the CSP is not
 	// silently left without a script-src exception for the shell.
-	h, hashes := Handler(Brand{})
+	h, hashes := Handler(ShellConfig{})
 	if h == nil {
 		t.Fatal("Handler returned a nil handler")
 	}
