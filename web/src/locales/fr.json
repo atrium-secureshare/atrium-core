@@ -77,6 +77,7 @@
   "upload": {
     "uploaded": "« {{name}} » envoyé",
     "uploadFailed": "« {{name}} » n’a pas pu être envoyé",
+    "tooLarge": "« {{name}} » dépasse la taille maximale de {{size}}",
     "title": "Envoyer des fichiers",
     "busy": "« {{name}} » en cours d’envoi …",
     "idle": "Déposez les fichiers ici ou cliquez pour les envoyer"

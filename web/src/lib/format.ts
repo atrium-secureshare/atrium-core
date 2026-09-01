@@ -62,15 +62,20 @@ export function modeLabel(mode: FolderMode): string {
   return i18n.t(MODE_LABEL_KEY[mode])
 }
 
+function oneDecimal(n: number): string {
+  return n.toLocaleString(intlLocale(), {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  })
+}
+
 // Uses SI (1000), not binary, to match the handoff.
 export function formatSize(bytes: number): string {
+  if (bytes >= 1_000_000_000) {
+    return oneDecimal(bytes / 1_000_000_000) + ' GB'
+  }
   if (bytes >= 1_000_000) {
-    return (
-      (bytes / 1_000_000).toLocaleString(intlLocale(), {
-        minimumFractionDigits: 1,
-        maximumFractionDigits: 1,
-      }) + ' MB'
-    )
+    return oneDecimal(bytes / 1_000_000) + ' MB'
   }
   if (bytes >= 1_000) {
     return Math.round(bytes / 1_000).toLocaleString(intlLocale()) + ' KB'

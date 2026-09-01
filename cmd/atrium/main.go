@@ -72,11 +72,14 @@ func run(cfg config.Config, logger *slog.Logger) error {
 
 	srv := &http.Server{
 		Addr: cfg.Addr,
-		Handler: api.Handler(oidc, tosMgr, providerSvc, streamProxy, cfg.BrandingDir, webui.Brand{
-			Name:         cfg.Brand.Name,
-			Sub:          cfg.Brand.Sub,
-			AccentColor:  cfg.Brand.AccentColor,
-			DefaultTheme: cfg.Brand.DefaultTheme,
+		Handler: api.Handler(oidc, tosMgr, providerSvc, streamProxy, cfg.BrandingDir, webui.ShellConfig{
+			Brand: webui.Brand{
+				Name:         cfg.Brand.Name,
+				Sub:          cfg.Brand.Sub,
+				AccentColor:  cfg.Brand.AccentColor,
+				DefaultTheme: cfg.Brand.DefaultTheme,
+			},
+			MaxUploadSize: cfg.Provider.MaxUploadSize,
 		}, cfg.SecureCookies, logger),
 		ReadHeaderTimeout: 10 * time.Second,
 	}

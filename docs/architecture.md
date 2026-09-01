@@ -64,7 +64,7 @@ alongside `X-Frame-Options`). Everything the app loads is same-origin (bundle,
 CSS, bundled fonts, `/branding/` logos, the JSON API), so no external origins
 are allowed. `script-src` stays free of `'unsafe-inline'`: `webui.Handler`
 returns the SHA-256 hashes of the shell's inline `<script>` blocks (the pre-paint
-theme script and, when a brand is set, the injected `window.__ATRIUM__` script),
+theme script and the injected `window.__ATRIUM__` script),
 which the CSP lists as `'sha256-...'` sources. The hashes are derived from the
 actually served `index.html` at startup, so they can never drift from the
 markup. `style-src` keeps `'unsafe-inline'` because the app sets dynamic style
@@ -72,7 +72,9 @@ attributes (e.g. the upload progress width) that no static hash can cover, and
 the accent override is injected as an inline `<style>`.
 
 The `window.__ATRIUM__` object is placed right after `<head>`, so it exists
-before the pre-paint theme script and the app bundle; only set values are emitted
+before the pre-paint theme script and the app bundle. It carries the white-label
+values plus the settings the client applies itself, currently the upload limit it
+checks a file against before sending it. Only set values are emitted
 (`omitempty`), and the JSON is produced by `encoding/json`, whose default HTML
 escaping renders `<`/`>`/`&` as `\uXXXX`, so a brand value containing
 `</script>` cannot break out of the tag. `BRAND_ACCENT_COLOR` is validated as a

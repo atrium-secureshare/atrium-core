@@ -40,6 +40,24 @@ test.describe('Upload and permission modes', () => {
     await expect(contents.getByText('Ihr Upload')).toBeVisible()
   })
 
+  test('oversize file: rejected client-side, naming the limit', async ({ authed }) => {
+    // MAX_UPLOAD_SIZE (1 KB here) reaches the shell as window.__ATRIUM__, so the
+    // dropzone rejects the file itself and nothing is transferred or stored.
+    await authed.getByRole('button', { name: 'Ordner öffnen: Projekt' }).click()
+    await authed.locator('input[type="file"]').setInputFiles({
+      name: 'gross.bin',
+      mimeType: 'application/octet-stream',
+      buffer: Buffer.alloc(2048),
+    })
+
+    await expect(
+      authed.getByText('«gross.bin» überschreitet die maximale Grösse von 1 KB'),
+    ).toBeVisible()
+    await expect(
+      authed.getByRole('list', { name: 'Ordnerinhalt' }).getByText('gross.bin'),
+    ).toHaveCount(0)
+  })
+
   test('dropzone: upload accepted, contents never listed', async ({ authed }) => {
     await authed.getByRole('button', { name: 'Ordner öffnen: Briefkasten' }).click()
     await expect(authed.getByRole('note')).toContainText('Dropzone')

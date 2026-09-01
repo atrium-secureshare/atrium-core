@@ -24,7 +24,7 @@ operator reference; for the security design behind these settings see
 | `PROVIDER_TYPE`       | none       | Storage backend to bind at startup; required. Currently supported: `nextcloud` |
 | `PROVIDER_BASE_URL`   | none       | Absolute base URL of the storage plugin app; required        |
 | `PROVIDER_JWT_PRIVATE_KEY` | none  | PEM ECDSA **P-256** private key for signing plugin tokens; required |
-| `MAX_UPLOAD_SIZE`    | `104857600` | Max upload size in bytes (100 MiB); larger uploads get 413 |
+| `MAX_UPLOAD_SIZE`    | `104857600` | Max upload size in bytes (100 MiB); larger uploads get 413, and the value reaches the client so it rejects them before transferring |
 | `PROVIDER_TIMEOUT`    | `30m`   | Bounds a single download/upload transfer to the plugin    |
 | `AUDIT_PSEUDONYMIZE` | `true`  | Hash recipient emails in audit events; `false` only for local dev |
 | `AUDIT_SALT`         | none       | Optional salt strengthening the audit email hash against enumeration |
@@ -59,7 +59,8 @@ neutral Atrium defaults:
   mount is read per request via `os.Root` (path traversal outside it is
   structurally impossible) and a swapped file is picked up without a restart.
 - **Text & theme**. `BRAND_NAME`, `BRAND_SUB` and `BRAND_DEFAULT_THEME` are
-  injected into `index.html` at startup as a `window.__ATRIUM__` object;
+  injected into `index.html` at startup as a `window.__ATRIUM__` object, which
+  also carries `MAX_UPLOAD_SIZE` as `maxUploadSize`;
   `BRAND_ACCENT_COLOR` is validated as a hex colour (fail-fast) and injected as a
   `:root` CSS override. See [architecture.md](architecture.md) for how this stays
   within the Content-Security-Policy.

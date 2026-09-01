@@ -78,7 +78,7 @@ func newHandlerWithProvider(t *testing.T, svc api.ProviderService) (http.Handler
 	t.Helper()
 	p := authtest.NewProvider(t)
 	a := p.Auth(t)
-	return api.Handler(a, nil, svc, testProxy(), "", webui.Brand{}, false, testLogger()), p, a
+	return api.Handler(a, nil, svc, testProxy(), "", webui.ShellConfig{}, false, testLogger()), p, a
 }
 
 func newHandler(t *testing.T) http.Handler {
@@ -122,7 +122,7 @@ func newTOSHandlerWithProvider(t *testing.T, svc api.ProviderService) (http.Hand
 	if err != nil {
 		t.Fatalf("NewManager: %v", err)
 	}
-	return api.Handler(a, mgr, svc, testProxy(), "", webui.Brand{}, false, testLogger()), p, a
+	return api.Handler(a, mgr, svc, testProxy(), "", webui.ShellConfig{}, false, testLogger()), p, a
 }
 
 func TestHealthz(t *testing.T) {
@@ -149,7 +149,7 @@ func TestReadyzReflectsProviderTrust(t *testing.T) {
 		"trust unhealthy": {stubTrust{err: errStub}, http.StatusServiceUnavailable},
 	} {
 		t.Run(name, func(t *testing.T) {
-			h := api.Handler(p.Auth(t), nil, tc.trust, testProxy(), "", webui.Brand{}, false, testLogger())
+			h := api.Handler(p.Auth(t), nil, tc.trust, testProxy(), "", webui.ShellConfig{}, false, testLogger())
 			rec := httptest.NewRecorder()
 			h.ServeHTTP(rec, httptest.NewRequest(http.MethodGet, "/readyz", nil))
 			if rec.Code != tc.wantStatus {
@@ -532,7 +532,7 @@ func TestSecurityHeadersHSTS(t *testing.T) {
 	} {
 		t.Run(name, func(t *testing.T) {
 			p := authtest.NewProvider(t)
-			h := api.Handler(p.Auth(t), nil, stubTrust{}, testProxy(), "", webui.Brand{}, tc.secureTransport, testLogger())
+			h := api.Handler(p.Auth(t), nil, stubTrust{}, testProxy(), "", webui.ShellConfig{}, tc.secureTransport, testLogger())
 			rec := httptest.NewRecorder()
 			h.ServeHTTP(rec, httptest.NewRequest(http.MethodGet, "/healthz", nil))
 
