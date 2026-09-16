@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.2.0](https://github.com/atrium-secureshare/atrium-core/compare/v0.1.0...v0.2.0) (2026-09-16)
+
+
+### Features
+
+* **auth:** confirm logout instead of bouncing back to the identity provider ([#71](https://github.com/atrium-secureshare/atrium-core/issues/71)) ([827bd41](https://github.com/atrium-secureshare/atrium-core/commit/827bd41b858d3935e918567cd601ccd39558be00))
+
+
+### Bug Fixes
+
+* Bump @playwright/test from 1.62.1 to 1.63.0 in /e2e ([#64](https://github.com/atrium-secureshare/atrium-core/issues/64)) ([20be58f](https://github.com/atrium-secureshare/atrium-core/commit/20be58f1d2f1b6f07235c8464b75ef00a209bcc6))
+* Bump @playwright/test from 1.62.1 to 1.63.0 in /web ([#69](https://github.com/atrium-secureshare/atrium-core/issues/69)) ([2ebd2b0](https://github.com/atrium-secureshare/atrium-core/commit/2ebd2b0cdc09b7ec493e6b863eade3cd81df1373))
+* Bump @types/node from 26.4.0 to 26.4.1 in /web ([#59](https://github.com/atrium-secureshare/atrium-core/issues/59)) ([840bf3e](https://github.com/atrium-secureshare/atrium-core/commit/840bf3e5c3b1a0d217b2eadb907a6c84247d458a))
+* Bump @types/node from 26.4.1 to 26.5.1 in /web ([#66](https://github.com/atrium-secureshare/atrium-core/issues/66)) ([8b78a8f](https://github.com/atrium-secureshare/atrium-core/commit/8b78a8fc34a9cbc6669bc433e43ab621a8b55b34))
+* Bump @types/react-dom from 19.2.5 to 19.2.7 in /web ([#57](https://github.com/atrium-secureshare/atrium-core/issues/57)) ([cc99c91](https://github.com/atrium-secureshare/atrium-core/commit/cc99c91369aa1848f54a7bc664a56b0c1bbbbf98))
+* Bump github.com/coreos/go-oidc/v3 from 3.20.0 to 3.21.0 ([#55](https://github.com/atrium-secureshare/atrium-core/issues/55)) ([dbc3d04](https://github.com/atrium-secureshare/atrium-core/commit/dbc3d040b109b0fb41aa69d3aac1acbe6ed1c520))
+* Bump github.com/go-jose/go-jose/v4 from 4.1.4 to 4.1.5 ([#54](https://github.com/atrium-secureshare/atrium-core/issues/54)) ([b1035c6](https://github.com/atrium-secureshare/atrium-core/commit/b1035c6caf7b29030818a51866dae3cab64385af))
+* Bump golang.org/x/oauth2 from 0.36.0 to 0.37.0 ([#63](https://github.com/atrium-secureshare/atrium-core/issues/63)) ([aa33718](https://github.com/atrium-secureshare/atrium-core/commit/aa33718d81c4f3c6f6791a00128811de07b34c1d))
+* Bump golang.org/x/text from 0.41.0 to 0.42.0 ([#62](https://github.com/atrium-secureshare/atrium-core/issues/62)) ([2deb595](https://github.com/atrium-secureshare/atrium-core/commit/2deb5955ed9163dad882651da280823ffc2af38a))
+* Bump i18next from 26.4.0 to 26.4.2 in /web ([#58](https://github.com/atrium-secureshare/atrium-core/issues/58)) ([e04165a](https://github.com/atrium-secureshare/atrium-core/commit/e04165ac0883463b33f06042def724890e2c7a69))
+* Bump lucide-react from 1.35.0 to 1.41.0 in /web ([#60](https://github.com/atrium-secureshare/atrium-core/issues/60)) ([2db4fe9](https://github.com/atrium-secureshare/atrium-core/commit/2db4fe91aac40a3b344403d9f42769592def7d00))
+* Bump lucide-react from 1.41.0 to 1.45.0 in /web ([#68](https://github.com/atrium-secureshare/atrium-core/issues/68)) ([245a170](https://github.com/atrium-secureshare/atrium-core/commit/245a17017620fb0179f5be1c15b9a0d66620d8f2))
+* Bump oxlint from 1.80.0 to 1.81.0 in /web ([#56](https://github.com/atrium-secureshare/atrium-core/issues/56)) ([7630503](https://github.com/atrium-secureshare/atrium-core/commit/76305039c3f50418fd7edc3a2a94357332721627))
+* Bump oxlint from 1.81.0 to 1.82.0 in /web ([#70](https://github.com/atrium-secureshare/atrium-core/issues/70)) ([39229e0](https://github.com/atrium-secureshare/atrium-core/commit/39229e0822351d728e6f30927f4fb3a3e950b045))
+* Bump react-i18next from 17.0.12 to 17.0.13 in /web ([#61](https://github.com/atrium-secureshare/atrium-core/issues/61)) ([afc053a](https://github.com/atrium-secureshare/atrium-core/commit/afc053a809916315cc8da3f6b6e79a1d61ab07fa))
+* Bump the react group across 1 directory with 2 updates ([#65](https://github.com/atrium-secureshare/atrium-core/issues/65)) ([7826875](https://github.com/atrium-secureshare/atrium-core/commit/7826875d735c0142658f2b64d32429a6055dc649))
+* Bump vite from 8.2.2 to 8.3.0 in /web ([#67](https://github.com/atrium-secureshare/atrium-core/issues/67)) ([1bf52f1](https://github.com/atrium-secureshare/atrium-core/commit/1bf52f12bfe44042c07ad7d85dbbd9b57f715d87))
+
 ## [0.1.0](https://github.com/atrium-secureshare/atrium-core/compare/v0.0.2...v0.1.0) (2026-09-01)
 
 
