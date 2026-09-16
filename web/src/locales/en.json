@@ -94,6 +94,9 @@
   "app": {
     "loginFailedTitle": "Sign-in failed",
     "loginRetry": "Try signing in again",
+    "loggedOutTitle": "You have been signed out",
+    "loggedOutHint": "Close the browser completely.",
+    "loginAgain": "Sign in again",
     "notFoundTitle": "Page not found",
     "home": "To the home page"
   },

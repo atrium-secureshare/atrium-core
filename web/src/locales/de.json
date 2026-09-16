@@ -94,6 +94,9 @@
   "app": {
     "loginFailedTitle": "Anmeldung fehlgeschlagen",
     "loginRetry": "Anmeldung wiederholen",
+    "loggedOutTitle": "Sie wurden abgemeldet",
+    "loggedOutHint": "Schliessen Sie den Browser vollständig.",
+    "loginAgain": "Erneut anmelden",
     "notFoundTitle": "Seite nicht gefunden",
     "home": "Zur Startseite"
   },

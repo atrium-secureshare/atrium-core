@@ -98,11 +98,24 @@ func TestLogoutClearsSession(t *testing.T) {
 	if rec.Code != http.StatusFound {
 		t.Fatalf("status = %d, want %d", rec.Code, http.StatusFound)
 	}
-	if rec.Header().Get("Location") != LoginPath {
-		t.Fatalf("Location = %q, want %q", rec.Header().Get("Location"), LoginPath)
+	if rec.Header().Get("Location") != loggedOutPath {
+		t.Fatalf("Location = %q, want %q", rec.Header().Get("Location"), loggedOutPath)
 	}
 	if !clearedSessionCookie(rec) {
 		t.Fatal("expected session cookie to be cleared")
+	}
+}
+
+func TestPostLogoutRedirectURI(t *testing.T) {
+	got, err := postLogoutRedirectURI("https://atrium.example.test/auth/callback")
+	if err != nil {
+		t.Fatalf("postLogoutRedirectURI: %v", err)
+	}
+	if want := "https://atrium.example.test" + loggedOutPath; got != want {
+		t.Fatalf("uri = %q, want %q", got, want)
+	}
+	if _, err := postLogoutRedirectURI("/auth/callback"); err == nil {
+		t.Fatal("expected an error for a non-absolute redirect URI")
 	}
 }
 

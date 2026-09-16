@@ -36,6 +36,46 @@ test.describe('Authentication', () => {
     await expect(authed.getByRole('button', { name: 'Anmelden' })).toHaveCount(0)
   })
 
+  test('logout ends the session and confirms it', async ({ authed }) => {
+    await authed.getByRole('button', { name: 'Kontomenü' }).click()
+    await authed.getByRole('menuitem', { name: 'Abmelden' }).click()
+
+    // The provider returns here, not to the app root where the shell would 401.
+    await expect(authed).toHaveURL(/\/auth\/logged-out$/)
+    await expect(authed.getByRole('status')).toContainText('abgemeldet')
+    await expect(authed.getByRole('link', { name: 'Erneut anmelden' })).toBeVisible()
+
+    expect((await authed.request.get('/api/shares')).status()).toBe(401)
+  })
+
+  test('the confirmation page loads no authenticated endpoint, so it cannot bounce', async ({
+    page,
+  }) => {
+    // Only a 401 can trigger the bounce, so assert its cause is absent rather
+    // than waiting out a redirect that may never come.
+    const apiCalls: string[] = []
+    page.on('request', (req) => {
+      if (new URL(req.url()).pathname.startsWith('/api/')) apiCalls.push(req.url())
+    })
+
+    await page.goto('/auth/logged-out')
+    await page.waitForLoadState('networkidle')
+
+    expect(apiCalls).toHaveLength(0)
+    expect(new URL(page.url()).pathname).toBe('/auth/logged-out')
+    await expect(page.getByRole('status')).toBeVisible()
+  })
+
+  test('signing in again from the confirmation returns to the IdP login', async ({
+    authed,
+  }) => {
+    await authed.getByRole('button', { name: 'Kontomenü' }).click()
+    await authed.getByRole('menuitem', { name: 'Abmelden' }).click()
+    await authed.getByRole('link', { name: 'Erneut anmelden' }).click()
+
+    await expect(authed.getByRole('button', { name: 'Anmelden' })).toBeVisible()
+  })
+
   test('identity binding: a recipient sees only their own shares', async ({
     page,
   }) => {

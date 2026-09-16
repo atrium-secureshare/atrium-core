@@ -94,6 +94,9 @@
   "app": {
     "loginFailedTitle": "Accesso non riuscito",
     "loginRetry": "Riprova ad accedere",
+    "loggedOutTitle": "La disconnessione è riuscita",
+    "loggedOutHint": "Chiudi completamente il browser.",
+    "loginAgain": "Accedi di nuovo",
     "notFoundTitle": "Pagina non trovata",
     "home": "Alla pagina iniziale"
   },

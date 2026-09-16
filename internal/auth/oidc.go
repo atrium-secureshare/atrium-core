@@ -45,6 +45,11 @@ const (
 // the page or read from the address bar.
 const errorPath = "/auth/error"
 
+// loggedOutPath is the post-logout landing page: a client route that loads no
+// authenticated endpoint, so it confirms the logout instead of 401ing and
+// bouncing into a fresh login.
+const loggedOutPath = "/auth/logged-out"
+
 // flowCookiePath scopes the short-lived flow cookies to the auth endpoints, so
 // they are never sent with requests to the rest of the application.
 const flowCookiePath = "/auth"
@@ -126,6 +131,9 @@ func NewOIDCAuth(ctx context.Context, cfg config.Config, logger *slog.Logger) (*
 	if !cfg.OIDC.RequireEmailVerified {
 		logger.Warn("OIDC_REQUIRE_EMAIL_VERIFIED is false: logins with an unverified email are accepted")
 	}
+	if meta.EndSessionEndpoint == "" {
+		logger.Warn("the identity provider advertises no end_session_endpoint: logout clears the gateway session only, and the provider's SSO session stays active")
+	}
 
 	return &OIDCAuth{
 		provider: provider,
@@ -155,7 +163,7 @@ func postLogoutRedirectURI(redirectURI string) (string, error) {
 	if err != nil || !u.IsAbs() {
 		return "", fmt.Errorf("derive post-logout redirect from %q: %w", redirectURI, err)
 	}
-	return (&url.URL{Scheme: u.Scheme, Host: u.Host, Path: "/"}).String(), nil
+	return (&url.URL{Scheme: u.Scheme, Host: u.Host, Path: loggedOutPath}).String(), nil
 }
 
 // LoginHandler starts the authorization-code flow: it generates CSRF state, a
