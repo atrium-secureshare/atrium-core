@@ -94,6 +94,9 @@
   "app": {
     "loginFailedTitle": "Échec de la connexion",
     "loginRetry": "Réessayer la connexion",
+    "loggedOutTitle": "Vous avez été déconnecté",
+    "loggedOutHint": "Fermez complètement le navigateur.",
+    "loginAgain": "Se reconnecter",
     "notFoundTitle": "Page introuvable",
     "home": "Vers la page d’accueil"
   },

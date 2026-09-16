@@ -63,7 +63,8 @@ func (a *OIDCAuth) denyUnauthenticated(w http.ResponseWriter, r *http.Request) {
 
 // LogoutHandler clears the local session and, when the provider supports it,
 // redirects to end_session_endpoint to end the SSO session too — otherwise a
-// follow-up request would silently sign the recipient back in.
+// follow-up request would silently sign the recipient back in. Both paths end on
+// loggedOutPath.
 func (a *OIDCAuth) LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	session, err := a.validateSessionCookie(r)
 	http.SetCookie(w, a.clearSessionCookie())
@@ -80,7 +81,7 @@ func (a *OIDCAuth) LogoutHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, a.endSessionEndpoint+"?"+params.Encode(), http.StatusFound)
 		return
 	}
-	http.Redirect(w, r, LoginPath, http.StatusFound)
+	http.Redirect(w, r, loggedOutPath, http.StatusFound)
 }
 
 // wantsJSON reports whether the request should get a JSON error rather than a

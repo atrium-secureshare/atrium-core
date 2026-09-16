@@ -1,6 +1,6 @@
 import { Component, type ReactNode } from 'react'
 import i18n from '@/i18n'
-import { ErrorScreen } from './ErrorScreen'
+import { MessageScreen } from './MessageScreen'
 
 // Last-resort catch for a render error. A class because React exposes error
 // catching only through the class lifecycle; recovery is a full reload since the
@@ -19,7 +19,7 @@ export class ErrorBoundary extends Component<
     if (!this.state.failed) return this.props.children
     return (
       <div className="flex min-h-svh items-center justify-center px-6">
-        <ErrorScreen
+        <MessageScreen
           title={i18n.t('errorBoundary.title')}
           action={
             <a href="/" className="hover:underline">

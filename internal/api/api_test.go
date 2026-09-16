@@ -412,22 +412,26 @@ func TestShareEndpointErrorsMapToStatus(t *testing.T) {
 	}
 }
 
-// TestLogout covers both logout paths. Both answer 302 and clear the session
-// cookie; they differ only in the redirect target. Without a session there is
-// nothing to end at the provider, so it falls back to the login path. With one,
-// logout is RP-initiated against the provider's end_session_endpoint, carrying
-// id_token_hint and post_logout_redirect_uri so the SSO session ends too, not
-// just the local cookie.
+// Pinned as a literal: operators register this path at the provider, so changing
+// it breaks deployments.
+const loggedOutURL = "/auth/logged-out"
+
+// TestLogout covers both logout paths. Both answer 302, clear the session cookie
+// and end on the confirmation page; they differ in how they get there. Without a
+// session there is nothing to end at the provider, so the gateway redirects there
+// itself. With one, logout is RP-initiated against the provider's
+// end_session_endpoint, carrying id_token_hint and post_logout_redirect_uri so
+// the SSO session ends too, not just the local cookie.
 func TestLogout(t *testing.T) {
 	for name, tc := range map[string]struct {
 		withSession  bool
 		wantLocation func(t *testing.T, p *authtest.Provider, loc string)
 	}{
-		"without session falls back to login": {
+		"without session confirms locally": {
 			withSession: false,
 			wantLocation: func(t *testing.T, _ *authtest.Provider, loc string) {
-				if loc != auth.LoginPath {
-					t.Fatalf("Location = %q, want %q", loc, auth.LoginPath)
+				if loc != loggedOutURL {
+					t.Fatalf("Location = %q, want %q", loc, loggedOutURL)
 				}
 			},
 		},
@@ -445,8 +449,8 @@ func TestLogout(t *testing.T) {
 				if q.Get("id_token_hint") == "" {
 					t.Error("id_token_hint missing from logout redirect")
 				}
-				if got := q.Get("post_logout_redirect_uri"); got != "http://localhost:8080/" {
-					t.Errorf("post_logout_redirect_uri = %q, want %q", got, "http://localhost:8080/")
+				if want := "http://localhost:8080" + loggedOutURL; q.Get("post_logout_redirect_uri") != want {
+					t.Errorf("post_logout_redirect_uri = %q, want %q", q.Get("post_logout_redirect_uri"), want)
 				}
 				if got := q.Get("client_id"); got != authtest.ClientID {
 					t.Errorf("client_id = %q, want %q", got, authtest.ClientID)

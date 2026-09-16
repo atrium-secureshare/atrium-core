@@ -46,6 +46,12 @@ missing or malformed. Authentication endpoints are grouped under `/auth/*`
 (`/auth/login`, `/auth/callback`, `/auth/logout`); `OIDC_REDIRECT_URI` must
 point at `/auth/callback`.
 
+On logout the gateway clears its session cookie and redirects to the provider's
+`end_session_endpoint` with `id_token_hint`, so the SSO session ends too.
+`post_logout_redirect_uri` points at `/auth/logged-out`, a client route that
+loads no authenticated endpoint — returning to the app root would `401` and
+bounce into a fresh login instead of confirming the logout.
+
 ## Security headers
 
 A single middleware (`internal/api/security.go`) wraps the whole handler, so
