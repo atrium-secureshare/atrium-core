@@ -17,8 +17,8 @@ operator reference; for the security design behind these settings see
 | `OIDC_REQUIRE_EMAIL_VERIFIED` | `true` | Reject logins without `email_verified`; set `false` only for a dev IdP |
 | `OIDC_MFA_ACR_VALUES` | none      | Comma-separated `acr` values that count as MFA; empty disables the check |
 | `SESSION_KEY`        | none       | Base64 key (≥32 bytes) for HMAC-signed sessions; required |
-| `SESSION_ABSOLUTE_TTL` | `12h` | Absolute session lifetime, regardless of activity (Go duration) |
-| `SESSION_IDLE_TTL`   | `0`     | Sign out after this much inactivity; `0` disables it, and it must not exceed the absolute lifetime |
+| `SESSION_ABSOLUTE_TTL` | `12h` | Absolute session lifetime, regardless of activity; Go duration (`12h`, `1h30m`), must be positive |
+| `SESSION_IDLE_TTL`   | `0`     | Sign out after this much inactivity; Go duration (`1h`, `1h30m`); `0` disables it, and it must not exceed the absolute lifetime |
 | `TOS_ENABLED`        | `false` | Enable the Terms-of-Service consent gate                 |
 | `TOS_PATH`           | none       | Path to the ToS Markdown file; required when enabled     |
 | `TOS_VERSION`        | hash    | Explicit ToS version label; defaults to a content-hash prefix |
@@ -37,6 +37,15 @@ operator reference; for the security design behind these settings see
 | `BRAND_DEFAULT_THEME`| `light` | Initial theme for first-time visitors: `light`\|`dark`           |
 
 ## Session timeouts
+
+Both timeouts are Go durations: a number with a unit, optionally combined
+(`45s`, `90m`, `1h`, `1h30m`, `0.5h`). Valid units are `ns`, `us`, `ms`, `s`,
+`m` and `h`, lowercase. Startup fails on a bare second count (`3600`), on a day
+unit (`1d`; write `24h`) and on uppercase (`12H`).
+
+`SESSION_ABSOLUTE_TTL` must be positive and defaults to `12h`.
+`SESSION_IDLE_TTL` defaults to `0`, which turns the idle timeout off, and must
+not exceed the absolute lifetime.
 
 `SESSION_IDLE_TTL` is a sliding window: every authenticated request re-issues the
 session cookie with a new activity timestamp, and the response advertises the
