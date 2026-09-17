@@ -11,7 +11,8 @@ const hstsValue = "max-age=31536000; includeSubDomains"
 
 // securityHeaders sets the gateway's HTTP security headers on every response.
 // Strict-Transport-Security is added only when tls is true, since HSTS is
-// meaningful only over a secure transport.
+// meaningful only over a secure transport. Cache-Control is a default: handlers
+// serving identity-free content override it.
 func securityHeaders(next http.Handler, csp string, tls bool) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		h := w.Header()
@@ -19,6 +20,7 @@ func securityHeaders(next http.Handler, csp string, tls bool) http.Handler {
 		h.Set("X-Content-Type-Options", "nosniff")
 		h.Set("X-Frame-Options", "DENY")
 		h.Set("Referrer-Policy", "no-referrer")
+		h.Set("Cache-Control", "no-store")
 		if tls {
 			h.Set("Strict-Transport-Security", hstsValue)
 		}
