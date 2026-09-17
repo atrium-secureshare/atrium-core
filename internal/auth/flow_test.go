@@ -195,6 +195,30 @@ func TestCallbackSuccessSetsSession(t *testing.T) {
 	}
 }
 
+func TestCallbackClearsFlowCookies(t *testing.T) {
+	claims := map[string]any{"email": "recipient@example.com", "email_verified": true}
+	for name, opts := range map[string][]callbackOpt{
+		"success":        nil,
+		"state mismatch": {withState("forged")},
+	} {
+		t.Run(name, func(t *testing.T) {
+			p := authtest.NewProvider(t)
+			rec := runCallback(t, p, p.Auth(t), claims, opts...)
+
+			cookies := cookieMap(rec)
+			for _, c := range []string{"oauth_state", "oauth_nonce", "oauth_pkce", "oauth_next"} {
+				if cookies[c] == nil {
+					t.Errorf("%s: no expiry Set-Cookie in the response", c)
+					continue
+				}
+				if cookies[c].MaxAge >= 0 {
+					t.Errorf("%s MaxAge = %d, want negative", c, cookies[c].MaxAge)
+				}
+			}
+		})
+	}
+}
+
 func TestCallbackAcceptsConfiguredACR(t *testing.T) {
 	p := authtest.NewProvider(t)
 	a := p.Auth(t, func(c *config.Config) {

@@ -206,8 +206,10 @@ func (a *OIDCAuth) CallbackHandler(w http.ResponseWriter, r *http.Request) {
 			next = p
 		}
 	}
-	// Flow cookies are single-use: clear them regardless of the outcome.
-	defer a.clearFlowCookies(w)
+	// Flow cookies are single-use: clear them regardless of the outcome. This must
+	// precede any write, since a deferred clear would land after http.Redirect has
+	// committed the header, where added cookies are dropped.
+	a.clearFlowCookies(w)
 
 	stateCookie, err := r.Cookie(cookieState)
 	if err != nil || subtle.ConstantTimeCompare([]byte(stateCookie.Value), []byte(r.URL.Query().Get("state"))) != 1 {
