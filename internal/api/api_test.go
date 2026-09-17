@@ -522,6 +522,20 @@ func TestSecurityHeaders(t *testing.T) {
 	}
 }
 
+func TestCacheControl(t *testing.T) {
+	h, p, a := newHandlerWithProvider(t, stubTrust{})
+
+	if got := authedGET(t, h, p, a, "/api/me").Result().Header.Get("Cache-Control"); got != "no-store" {
+		t.Errorf("/api/me Cache-Control = %q, want %q", got, "no-store")
+	}
+
+	rec := httptest.NewRecorder()
+	h.ServeHTTP(rec, httptest.NewRequest(http.MethodGet, "/branding/logo.svg", nil))
+	if got := rec.Result().Header.Get("Cache-Control"); got != "no-cache" {
+		t.Errorf("/branding/logo.svg Cache-Control = %q, want %q", got, "no-cache")
+	}
+}
+
 // TestSecurityHeadersHSTS verifies Strict-Transport-Security is emitted exactly
 // when the deployment is served over TLS: absent on plain http (a browser must
 // never be told to force HTTPS for a local run) and, over TLS, a one-year

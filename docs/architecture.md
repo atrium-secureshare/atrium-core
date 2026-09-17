@@ -64,6 +64,11 @@ only when the deployment is served over TLS (`SecureCookies`, passed to
 HSTS is gated on the transport because it is meaningless (and undesirable) over
 plain http, e.g. local `go run`.
 
+The same middleware defaults `Cache-Control` to `no-store`, since the gateway
+cannot tell whether a shared cache sits in front of it. Only identity-free routes
+override it: the content-hashed assets (`immutable`), the SPA shell and
+`/branding/` (`no-cache`). Anything under `/api/` must keep the default.
+
 The CSP is `default-src 'self'` hardened with `object-src 'none'`,
 `base-uri 'none'` and `frame-ancestors 'none'` (the anti-clickjacking anchor
 alongside `X-Frame-Options`). Everything the app loads is same-origin (bundle,

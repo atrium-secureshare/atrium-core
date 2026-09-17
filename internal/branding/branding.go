@@ -30,6 +30,9 @@ func Handler(dir string) http.Handler {
 			http.NotFound(w, r)
 			return
 		}
+		// Revalidated rather than cached outright, so a file swapped into
+		// BRANDING_DIR takes effect without a restart.
+		w.Header().Set("Cache-Control", "no-cache")
 		if dir != "" && serveMounted(w, r, dir, name) {
 			return
 		}
