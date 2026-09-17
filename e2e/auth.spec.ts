@@ -76,6 +76,38 @@ test.describe('Authentication', () => {
     await expect(authed.getByRole('button', { name: 'Anmelden' })).toBeVisible()
   })
 
+  test('a deadline left over from an idle logout does not bounce the next visit', async ({
+    authed,
+  }) => {
+    // What an idle logout leaves in localStorage. Left in place it fires on the
+    // next mount, so even the load right after signing in again bounced straight
+    // back to the confirmation page.
+    await authed.evaluate(() =>
+      localStorage.setItem('atrium-session-expires', String(Date.now() - 1_000)),
+    )
+    await authed.reload()
+
+    await expect(
+      authed.getByRole('heading', { name: 'Meine Freigaben' }),
+    ).toBeVisible()
+    expect(new URL(authed.url()).pathname).toBe('/')
+  })
+
+  test('with no session a stale deadline still leads to login, not the confirmation', async ({
+    page,
+  }) => {
+    // Seeded from the confirmation page, which loads nothing authenticated: that
+    // is where an idled-out recipient sits before opening the app again.
+    await page.goto('/auth/logged-out')
+    await page.evaluate(() =>
+      localStorage.setItem('atrium-session-expires', String(Date.now() - 1_000)),
+    )
+
+    await page.goto('/')
+    await expect(page.getByRole('button', { name: 'Anmelden' })).toBeVisible()
+    expect(page.url()).toContain('/auth')
+  })
+
   test('identity binding: a recipient sees only their own shares', async ({
     page,
   }) => {

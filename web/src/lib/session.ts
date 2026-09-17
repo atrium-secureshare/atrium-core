@@ -13,6 +13,18 @@ export function sessionDeadline(): number | null {
   return stored > 0 ? stored : null
 }
 
+/**
+ * Drops a deadline that has already passed. Called at startup, where whether the
+ * session is still alive is the gateway's answer to give: a deadline left over
+ * from an earlier one fires the expiry check on mount and sends even a freshly
+ * logged-in visitor straight back to the logged-out page.
+ */
+export function forgetExpiredDeadline(): void {
+  const deadline = sessionDeadline()
+  if (deadline !== null && deadline <= Date.now())
+    localStorage.removeItem(STORAGE_KEY)
+}
+
 // A deadline only ever moves forward, so the newest reading wins and a stale one
 // — from another tab, or from a request whose response this app never sees —
 // can never pull it back.
