@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/atrium-secureshare/atrium-core/compare/v0.3.0...v0.3.1) (2026-09-17)
+
+
+### Bug Fixes
+
+* **session:** discard an already-expired deadline at startup ([#79](https://github.com/atrium-secureshare/atrium-core/issues/79)) ([49c9c3a](https://github.com/atrium-secureshare/atrium-core/commit/49c9c3a2eacf3a6048f22f0847561723775a98c2))
+
 ## [0.3.0](https://github.com/atrium-secureshare/atrium-core/compare/v0.2.0...v0.3.0) (2026-09-17)
 
 
