@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://github.com/atrium-secureshare/atrium-core/compare/v0.2.0...v0.3.0) (2026-09-17)
+
+
+### Features
+
+* **config:** rename SESSION_TTL to SESSION_ABSOLUTE_TTL and add SESSION_IDLE_TTL ([#76](https://github.com/atrium-secureshare/atrium-core/issues/76)) ([59a4037](https://github.com/atrium-secureshare/atrium-core/commit/59a403702244078c2f1c27a9d3760e06a42decee))
+
+
+### Bug Fixes
+
+* **api:** default every response to Cache-Control: no-store ([#73](https://github.com/atrium-secureshare/atrium-core/issues/73)) ([72f4283](https://github.com/atrium-secureshare/atrium-core/commit/72f4283ec91e5bba91663154513439d99a72e974))
+* **auth:** actually clear the flow cookies on callback ([#74](https://github.com/atrium-secureshare/atrium-core/issues/74)) ([a4c35fd](https://github.com/atrium-secureshare/atrium-core/commit/a4c35fd2e119e39b7d84a761d8049ddef4497328))
+
 ## [0.2.0](https://github.com/atrium-secureshare/atrium-core/compare/v0.1.0...v0.2.0) (2026-09-16)
 
 
