@@ -95,10 +95,16 @@
     "loginFailedTitle": "Accesso non riuscito",
     "loginRetry": "Riprova ad accedere",
     "loggedOutTitle": "La disconnessione è riuscita",
+    "loggedOutIdleTitle": "Sei stato disconnesso per inattività",
     "loggedOutHint": "Chiudi completamente il browser.",
     "loginAgain": "Accedi di nuovo",
     "notFoundTitle": "Pagina non trovata",
     "home": "Alla pagina iniziale"
+  },
+  "session": {
+    "warningTitle": "Stai per essere disconnesso",
+    "warningBody": "Sei rimasto inattivo. Per motivi di sicurezza verrai disconnesso tra {{time}}.",
+    "stay": "Rimani connesso"
   },
   "errorBoundary": {
     "title": "Si è verificato un errore",

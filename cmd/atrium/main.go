@@ -79,7 +79,8 @@ func run(cfg config.Config, logger *slog.Logger) error {
 				AccentColor:  cfg.Brand.AccentColor,
 				DefaultTheme: cfg.Brand.DefaultTheme,
 			},
-			MaxUploadSize: cfg.Provider.MaxUploadSize,
+			MaxUploadSize:  cfg.Provider.MaxUploadSize,
+			SessionIdleTTL: int64(cfg.SessionIdleTTL.Seconds()),
 		}, cfg.SecureCookies, logger),
 		ReadHeaderTimeout: 10 * time.Second,
 	}

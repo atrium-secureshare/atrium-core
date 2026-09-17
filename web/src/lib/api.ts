@@ -2,6 +2,8 @@
 // the gateway's HMAC session cookie, so no tokens are handled here; a 401 sends
 // the browser to OIDC login.
 
+import { EXPIRES_HEADER, noteExpiresIn, noteUnreadRequest } from '@/lib/session'
+
 export interface Share {
   id: string
   name: string
@@ -67,6 +69,7 @@ function redirectToLogin(): never {
 
 async function getJSON<T>(path: string): Promise<T> {
   const res = await fetch(path, { headers: { Accept: 'application/json' } })
+  noteExpiresIn(res.headers.get(EXPIRES_HEADER))
   if (res.status === 401) redirectToLogin()
   if (res.status === 403 && (await isTosRequired(res)))
     throw new TosRequiredError()
@@ -93,6 +96,7 @@ export async function acceptTos(): Promise<void> {
     method: 'POST',
     headers: { Accept: 'application/json' },
   })
+  noteExpiresIn(res.headers.get(EXPIRES_HEADER))
   if (res.status === 401) redirectToLogin()
   if (!res.ok)
     throw new ApiError(res.status, `accept tos failed: ${res.status}`)
@@ -129,8 +133,10 @@ export function triggerFolderFileDownload(
   startDownload(folderFileUrl(shareId, fileId))
 }
 
-// Clicks a hidden link so the browser saves the file in place.
+// Clicks a hidden link so the browser saves the file in place. The response never
+// reaches this app, so the session refresh it triggers has to be recorded here.
 function startDownload(href: string): void {
+  noteUnreadRequest()
   const a = document.createElement('a')
   a.href = href
   a.rel = 'noopener'
@@ -165,6 +171,7 @@ export function uploadFile(
       if (e.lengthComputable && onProgress) onProgress(e.loaded / e.total)
     }
     xhr.onload = () => {
+      noteExpiresIn(xhr.getResponseHeader(EXPIRES_HEADER))
       if (xhr.status === 401) {
         redirectToLogin()
         return

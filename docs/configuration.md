@@ -17,7 +17,8 @@ operator reference; for the security design behind these settings see
 | `OIDC_REQUIRE_EMAIL_VERIFIED` | `true` | Reject logins without `email_verified`; set `false` only for a dev IdP |
 | `OIDC_MFA_ACR_VALUES` | none      | Comma-separated `acr` values that count as MFA; empty disables the check |
 | `SESSION_KEY`        | none       | Base64 key (≥32 bytes) for HMAC-signed sessions; required |
-| `SESSION_TTL`        | `12h`   | Absolute session lifetime (Go duration)                  |
+| `SESSION_ABSOLUTE_TTL` | `12h` | Absolute session lifetime, regardless of activity (Go duration) |
+| `SESSION_IDLE_TTL`   | `0`     | Sign out after this much inactivity; `0` disables it, and it must not exceed the absolute lifetime |
 | `TOS_ENABLED`        | `false` | Enable the Terms-of-Service consent gate                 |
 | `TOS_PATH`           | none       | Path to the ToS Markdown file; required when enabled     |
 | `TOS_VERSION`        | hash    | Explicit ToS version label; defaults to a content-hash prefix |
@@ -34,6 +35,19 @@ operator reference; for the security design behind these settings see
 | `BRAND_SUB`          | `Secure Share` | White-label brand sub-label                               |
 | `BRAND_ACCENT_COLOR` | none       | CSS accent colour (e.g. `#2563eb`); empty keeps the theme accent |
 | `BRAND_DEFAULT_THEME`| `light` | Initial theme for first-time visitors: `light`\|`dark`           |
+
+## Session timeouts
+
+`SESSION_IDLE_TTL` is a sliding window: every authenticated request re-issues the
+session cookie with a new activity timestamp, and the response advertises the
+remaining seconds so the frontend can warn before signing the recipient out.
+
+Turning it on also sends `max_age` on every authorization request and rejects a
+login whose `auth_time` is older than the window. Without that, a still-live SSO
+session would silently undo an idle logout on the next click. The identity
+provider must therefore support `max_age` (Keycloak does); one that ignores it
+makes every login fail with the `auth_too_old` audit reason rather than letting
+the timeout be bypassed.
 
 ## Terms-of-Service consent gate
 

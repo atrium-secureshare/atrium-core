@@ -102,9 +102,9 @@ func (p *Provider) Auth(t *testing.T, opts ...func(*config.Config)) *auth.OIDCAu
 			RedirectURI:          "http://localhost:8080/auth/callback",
 			RequireEmailVerified: true,
 		},
-		SessionKey:    []byte("0123456789abcdef0123456789abcdef"),
-		SessionTTL:    time.Hour,
-		SecureCookies: false,
+		SessionKey:         []byte("0123456789abcdef0123456789abcdef"),
+		SessionAbsoluteTTL: time.Hour,
+		SecureCookies:      false,
 	}
 	for _, o := range opts {
 		o(&cfg)

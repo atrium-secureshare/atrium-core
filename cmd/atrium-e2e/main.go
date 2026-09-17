@@ -66,9 +66,9 @@ func run(logger *slog.Logger) error {
 			RedirectURI:          base + auth.CallbackPath,
 			RequireEmailVerified: true,
 		},
-		SessionKey:    []byte("e2e-session-key-0123456789abcdef"),
-		SessionTTL:    12 * time.Hour,
-		SecureCookies: false,
+		SessionKey:         []byte("e2e-session-key-0123456789abcdef"),
+		SessionAbsoluteTTL: 12 * time.Hour,
+		SecureCookies:      false,
 		Provider: config.ProviderConfig{
 			BaseURL:       stub.url,
 			PrivateKeyPEM: key,

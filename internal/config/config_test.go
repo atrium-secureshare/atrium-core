@@ -35,8 +35,11 @@ func TestLoadValid(t *testing.T) {
 	if !cfg.SecureCookies {
 		t.Error("SecureCookies should be true for https redirect")
 	}
-	if cfg.SessionTTL != 12*time.Hour {
-		t.Errorf("SessionTTL = %s, want default 12h", cfg.SessionTTL)
+	if cfg.SessionAbsoluteTTL != 12*time.Hour {
+		t.Errorf("SessionAbsoluteTTL = %s, want default 12h", cfg.SessionAbsoluteTTL)
+	}
+	if cfg.SessionIdleTTL != 0 {
+		t.Errorf("SessionIdleTTL = %s, want idle expiry off by default", cfg.SessionIdleTTL)
 	}
 	if len(cfg.SessionKey) < 32 {
 		t.Errorf("SessionKey len = %d, want >= 32", len(cfg.SessionKey))
@@ -96,7 +99,11 @@ func TestLoadRejectsInvalidValues(t *testing.T) {
 		{"non-boolean OIDC_REQUIRE_EMAIL_VERIFIED", "OIDC_REQUIRE_EMAIL_VERIFIED", "maybe"},
 		{"session key not valid base64", "SESSION_KEY", "not base64!!"},
 		{"session key under 32 bytes", "SESSION_KEY", "c2hvcnQ="}, // "short" -> 5 bytes
-		{"non-duration SESSION_TTL", "SESSION_TTL", "not-a-duration"},
+		{"non-duration SESSION_ABSOLUTE_TTL", "SESSION_ABSOLUTE_TTL", "not-a-duration"},
+		{"zero SESSION_ABSOLUTE_TTL", "SESSION_ABSOLUTE_TTL", "0"},
+		{"non-duration SESSION_IDLE_TTL", "SESSION_IDLE_TTL", "not-a-duration"},
+		{"negative SESSION_IDLE_TTL", "SESSION_IDLE_TTL", "-1m"},
+		{"SESSION_IDLE_TTL past the absolute lifetime", "SESSION_IDLE_TTL", "24h"},
 		{"non-boolean AUDIT_PSEUDONYMIZE", "AUDIT_PSEUDONYMIZE", "nope"},
 		{"unknown LOG_LEVEL", "LOG_LEVEL", "verbose"},
 		{"non-boolean TOS_ENABLED", "TOS_ENABLED", "yesplease"},
@@ -158,13 +165,17 @@ func TestLoadHTTPRedirectDisablesSecureCookies(t *testing.T) {
 
 func TestLoadCustomTTL(t *testing.T) {
 	validEnv(t)
-	t.Setenv("SESSION_TTL", "2h30m")
+	t.Setenv("SESSION_ABSOLUTE_TTL", "2h30m")
+	t.Setenv("SESSION_IDLE_TTL", "1h")
 	cfg, err := Load()
 	if err != nil {
 		t.Fatalf("Load: %v", err)
 	}
-	if cfg.SessionTTL != 2*time.Hour+30*time.Minute {
-		t.Errorf("SessionTTL = %s, want 2h30m", cfg.SessionTTL)
+	if cfg.SessionAbsoluteTTL != 2*time.Hour+30*time.Minute {
+		t.Errorf("SessionAbsoluteTTL = %s, want 2h30m", cfg.SessionAbsoluteTTL)
+	}
+	if cfg.SessionIdleTTL != time.Hour {
+		t.Errorf("SessionIdleTTL = %s, want 1h", cfg.SessionIdleTTL)
 	}
 }
 
