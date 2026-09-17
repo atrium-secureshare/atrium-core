@@ -26,6 +26,7 @@ const (
 // completion only annotates its start event with the bytes transferred.
 const (
 	EventLogout           = "logout"
+	EventSessionIdle      = "session-idle"
 	EventListShares       = "list-shares"
 	EventListFolder       = "list-folder"
 	EventDownloadComplete = "download-complete"

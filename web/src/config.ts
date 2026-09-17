@@ -12,6 +12,7 @@ export interface BrandConfig {
 // The server settings injected alongside the brand, mirroring webui.ShellConfig.
 interface ShellConfig extends BrandConfig {
   maxUploadSize: number
+  sessionIdleTtl: number
 }
 
 declare global {
@@ -26,8 +27,11 @@ const DEFAULTS: BrandConfig = {
   defaultTheme: 'light',
 }
 
-const { maxUploadSize: injectedMaxUploadSize, ...injectedBrand } =
-  window.__ATRIUM__ ?? {}
+const {
+  maxUploadSize: injectedMaxUploadSize,
+  sessionIdleTtl: injectedSessionIdleTtl,
+  ...injectedBrand
+} = window.__ATRIUM__ ?? {}
 
 export const brand: BrandConfig = { ...DEFAULTS, ...injectedBrand }
 
@@ -35,3 +39,8 @@ export const brand: BrandConfig = { ...DEFAULTS, ...injectedBrand }
 // where nothing is injected (the Vite dev server) the client skips its own check
 // and leaves the verdict to the server rather than inventing a limit.
 export const maxUploadSize: number | undefined = injectedMaxUploadSize
+
+// Seconds of inactivity after which the gateway ends the session. 0 (the value
+// when the server omits it) means idle expiry is off and the client runs no
+// expiry timer at all.
+export const sessionIdleTtl: number = injectedSessionIdleTtl ?? 0

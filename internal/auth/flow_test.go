@@ -7,6 +7,7 @@ import (
 	"net/http/httptest"
 	"net/url"
 	"testing"
+	"time"
 
 	"github.com/atrium-secureshare/atrium-core/internal/audit"
 	"github.com/atrium-secureshare/atrium-core/internal/auth"
@@ -356,6 +357,20 @@ func TestCallbackRejects(t *testing.T) {
 			wantACR:    "1",
 		},
 		{
+			name:       "authentication older than the idle window",
+			mutate:     func(c *config.Config) { c.SessionIdleTTL = 30 * time.Minute },
+			claims:     map[string]any{"email": "recipient@example.com", "email_verified": true, "auth_time": time.Now().Add(-2 * time.Hour).Unix()},
+			wantStatus: http.StatusSeeOther,
+			wantReason: "auth_too_old",
+		},
+		{
+			name:       "provider ignored max_age",
+			mutate:     func(c *config.Config) { c.SessionIdleTTL = 30 * time.Minute },
+			claims:     map[string]any{"email": "recipient@example.com", "email_verified": true},
+			wantStatus: http.StatusSeeOther,
+			wantReason: "auth_too_old",
+		},
+		{
 			name:       "nonce mismatch",
 			claims:     map[string]any{"email": "recipient@example.com", "email_verified": true, "nonce": "attacker-controlled-nonce"},
 			wantStatus: http.StatusSeeOther,
@@ -400,5 +415,52 @@ func TestCallbackRejects(t *testing.T) {
 				t.Errorf("acr = %v, want %s (the rejected acr value)", ev["acr"], tc.wantACR)
 			}
 		})
+	}
+}
+
+// max_age is what stops a still-live SSO session from silently undoing an idle
+// logout; it is only sent when idle expiry is configured.
+func TestLoginSendsMaxAgeForIdleExpiry(t *testing.T) {
+	for _, tc := range []struct {
+		name string
+		idle time.Duration
+		want string
+	}{
+		{"idle expiry on", 30 * time.Minute, "1800"},
+		{"idle expiry off", 0, ""},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			p := authtest.NewProvider(t)
+			a := p.Auth(t, func(c *config.Config) { c.SessionIdleTTL = tc.idle })
+
+			rec := httptest.NewRecorder()
+			a.LoginHandler(rec, httptest.NewRequest(http.MethodGet, auth.LoginPath, nil))
+
+			loc, err := url.Parse(rec.Header().Get("Location"))
+			if err != nil {
+				t.Fatalf("parse Location: %v", err)
+			}
+			if got := loc.Query().Get("max_age"); got != tc.want {
+				t.Errorf("max_age = %q, want %q", got, tc.want)
+			}
+		})
+	}
+}
+
+func TestCallbackAcceptsFreshAuthTime(t *testing.T) {
+	p := authtest.NewProvider(t)
+	a := p.Auth(t, func(c *config.Config) { c.SessionIdleTTL = 30 * time.Minute })
+
+	rec := runCallback(t, p, a, map[string]any{
+		"email":          "recipient@example.com",
+		"email_verified": true,
+		"auth_time":      time.Now().Unix(),
+	})
+
+	if rec.Code != http.StatusFound {
+		t.Fatalf("status = %d, want %d; body=%s", rec.Code, http.StatusFound, rec.Body.String())
+	}
+	if cookieMap(rec)["atrium_session"] == nil {
+		t.Fatal("expected a session cookie")
 	}
 }

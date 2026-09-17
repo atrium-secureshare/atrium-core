@@ -14,6 +14,7 @@ import (
 	"log/slog"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 
@@ -74,9 +75,10 @@ type OIDCAuth struct {
 	verifier     *oidc.IDTokenVerifier
 	logger       *slog.Logger
 
-	sessionKey    []byte
-	sessionTTL    time.Duration
-	secureCookies bool
+	sessionKey         []byte
+	sessionAbsoluteTTL time.Duration
+	sessionIdleTTL     time.Duration
+	secureCookies      bool
 
 	requireEmailVerified bool
 	// mfaACR holds the acr values that count as a satisfied second factor; empty
@@ -96,6 +98,22 @@ type idTokenClaims struct {
 	EmailVerified bool   `json:"email_verified"`
 	Nonce         string `json:"nonce"`
 	ACR           string `json:"acr"`
+	// AuthTime attests when the provider actually authenticated the end user;
+	// OIDC Core requires it whenever the request carried max_age.
+	AuthTime int64 `json:"auth_time"`
+}
+
+// authTimeLeeway absorbs clock skew between the provider and the gateway.
+const authTimeLeeway = 30 * time.Second
+
+// authTimeFresh reports whether the provider attested an authentication no older
+// than the idle window. A missing auth_time means max_age was ignored, so it
+// fails closed.
+func authTimeFresh(authTime int64, within time.Duration) bool {
+	if authTime == 0 {
+		return false
+	}
+	return time.Since(time.Unix(authTime, 0)) <= within+authTimeLeeway
 }
 
 // NewOIDCAuth performs OIDC discovery and builds the OAuth2 client, returning
@@ -147,7 +165,8 @@ func NewOIDCAuth(ctx context.Context, cfg config.Config, logger *slog.Logger) (*
 		verifier:             provider.Verifier(&oidc.Config{ClientID: cfg.OIDC.ClientID}),
 		logger:               logger,
 		sessionKey:           cfg.SessionKey,
-		sessionTTL:           cfg.SessionTTL,
+		sessionAbsoluteTTL:   cfg.SessionAbsoluteTTL,
+		sessionIdleTTL:       cfg.SessionIdleTTL,
 		secureCookies:        cfg.SecureCookies,
 		requireEmailVerified: cfg.OIDC.RequireEmailVerified,
 		mfaACR:               mfaACR,
@@ -189,11 +208,16 @@ func (a *OIDCAuth) LoginHandler(w http.ResponseWriter, r *http.Request) {
 		a.setFlowCookie(w, cookieNextPath, next)
 	}
 
-	authURL := a.oauth2Config.AuthCodeURL(state,
+	opts := []oauth2.AuthCodeOption{
 		oidc.Nonce(nonce),
 		oauth2.S256ChallengeOption(verifier),
-	)
-	http.Redirect(w, r, authURL, http.StatusFound)
+	}
+	// Without max_age a still-live SSO session would undo an idle logout with a
+	// silent redirect, leaving the timeout without effect.
+	if a.sessionIdleTTL > 0 {
+		opts = append(opts, oauth2.SetAuthURLParam("max_age", strconv.Itoa(int(a.sessionIdleTTL.Seconds()))))
+	}
+	http.Redirect(w, r, a.oauth2Config.AuthCodeURL(state, opts...), http.StatusFound)
 }
 
 // CallbackHandler completes the flow: it validates state, exchanges the code,
@@ -285,6 +309,13 @@ func (a *OIDCAuth) CallbackHandler(w http.ResponseWriter, r *http.Request) {
 			a.authError(w, r)
 			return
 		}
+	}
+
+	// go-oidc does not verify auth_time, so max_age is only enforced if we check it.
+	if a.sessionIdleTTL > 0 && !authTimeFresh(claims.AuthTime, a.sessionIdleTTL) {
+		audit.Log(a.logger, r, audit.LevelAudit, audit.EventLoginFailed, slog.String("email", claims.Email), slog.String("reason", "auth_too_old"))
+		a.authError(w, r)
+		return
 	}
 
 	cookie, err := a.createSessionCookie(claims.Email, rawIDToken)

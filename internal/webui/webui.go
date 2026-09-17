@@ -40,6 +40,9 @@ type ShellConfig struct {
 	// MaxUploadSize lets the client reject an oversize file before sending it,
 	// mirroring the limit the upload endpoint enforces anyway.
 	MaxUploadSize int64 `json:"maxUploadSize,omitempty"`
+	// SessionIdleTTL in seconds drives the client-side expiry warning; omitted
+	// when 0, which is the client's signal that idle expiry is off.
+	SessionIdleTTL int64 `json:"sessionIdleTtl,omitempty"`
 }
 
 // Handler serves the SPA: real files are served directly with long-lived caching,

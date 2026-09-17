@@ -95,10 +95,16 @@
     "loginFailedTitle": "Sign-in failed",
     "loginRetry": "Try signing in again",
     "loggedOutTitle": "You have been signed out",
+    "loggedOutIdleTitle": "You have been signed out due to inactivity",
     "loggedOutHint": "Close the browser completely.",
     "loginAgain": "Sign in again",
     "notFoundTitle": "Page not found",
     "home": "To the home page"
+  },
+  "session": {
+    "warningTitle": "You will be signed out soon",
+    "warningBody": "You have been inactive. For security reasons you will be signed out in {{time}}.",
+    "stay": "Stay signed in"
   },
   "errorBoundary": {
     "title": "An error occurred",

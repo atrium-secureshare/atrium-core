@@ -46,6 +46,14 @@ missing or malformed. Authentication endpoints are grouped under `/auth/*`
 (`/auth/login`, `/auth/callback`, `/auth/logout`); `OIDC_REDIRECT_URI` must
 point at `/auth/callback`.
 
+Two independent deadlines bound a session, both carried in the signed cookie: the
+absolute expiry, which activity never moves, and the optional idle deadline
+(`SESSION_IDLE_TTL`), which every authenticated request pushes forward. Re-issuing
+is throttled to once a minute because the cookie carries the ID token. The idle
+check sits in session validation rather than in its callers, so no call site can
+skip it, and the login request carries `max_age` with the same window so the
+provider's own session cannot silently reinstate an idled-out recipient.
+
 On logout the gateway clears its session cookie and redirects to the provider's
 `end_session_endpoint` with `id_token_hint`, so the SSO session ends too.
 `post_logout_redirect_uri` points at `/auth/logged-out`, a client route that

@@ -23,8 +23,11 @@ type Config struct {
 	// SessionKey signs stateless session cookies (HMAC-SHA256); at least 32 bytes.
 	SessionKey []byte
 
-	// SessionTTL is the absolute lifetime of a session cookie.
-	SessionTTL time.Duration
+	// SessionAbsoluteTTL is the absolute lifetime of a session cookie.
+	SessionAbsoluteTTL time.Duration
+
+	// SessionIdleTTL ends a session after that much inactivity; 0 disables it.
+	SessionIdleTTL time.Duration
 
 	// SecureCookies sets the Secure cookie attribute; derived from the redirect
 	// URI scheme (https) so plain http still works.
@@ -167,8 +170,15 @@ func Load() (Config, error) {
 	if cfg.SessionKey, err = decodeSessionKey(os.Getenv("SESSION_KEY")); err != nil {
 		return Config{}, err
 	}
-	if cfg.SessionTTL, err = parseSessionTTL(os.Getenv("SESSION_TTL")); err != nil {
+	if cfg.SessionAbsoluteTTL, err = parseSessionAbsoluteTTL(os.Getenv("SESSION_ABSOLUTE_TTL")); err != nil {
 		return Config{}, err
+	}
+	if cfg.SessionIdleTTL, err = parseSessionIdleTTL(os.Getenv("SESSION_IDLE_TTL")); err != nil {
+		return Config{}, err
+	}
+	// An idle window past the absolute lifetime could never trigger.
+	if cfg.SessionIdleTTL > cfg.SessionAbsoluteTTL {
+		return Config{}, fmt.Errorf("SESSION_IDLE_TTL (%s) must not exceed SESSION_ABSOLUTE_TTL (%s)", cfg.SessionIdleTTL, cfg.SessionAbsoluteTTL)
 	}
 	if cfg.TOS, err = loadTOS(); err != nil {
 		return Config{}, err
@@ -309,17 +319,33 @@ func decodeSessionKey(raw string) ([]byte, error) {
 	return key, nil
 }
 
-// parseSessionTTL parses the session lifetime, defaulting to 12h when unset.
-func parseSessionTTL(raw string) (time.Duration, error) {
+// parseSessionAbsoluteTTL parses the absolute session lifetime, defaulting to 12h
+// when unset.
+func parseSessionAbsoluteTTL(raw string) (time.Duration, error) {
 	if raw == "" {
 		return 12 * time.Hour, nil
 	}
 	ttl, err := time.ParseDuration(raw)
 	if err != nil {
-		return 0, fmt.Errorf("SESSION_TTL must be a valid Go duration: %w", err)
+		return 0, fmt.Errorf("SESSION_ABSOLUTE_TTL must be a valid Go duration: %w", err)
 	}
 	if ttl <= 0 {
-		return 0, fmt.Errorf("SESSION_TTL must be positive, got %s", ttl)
+		return 0, fmt.Errorf("SESSION_ABSOLUTE_TTL must be positive, got %s", ttl)
+	}
+	return ttl, nil
+}
+
+// parseSessionIdleTTL parses the inactivity timeout; unset or zero disables it.
+func parseSessionIdleTTL(raw string) (time.Duration, error) {
+	if raw == "" {
+		return 0, nil
+	}
+	ttl, err := time.ParseDuration(raw)
+	if err != nil {
+		return 0, fmt.Errorf("SESSION_IDLE_TTL must be a valid Go duration: %w", err)
+	}
+	if ttl < 0 {
+		return 0, fmt.Errorf("SESSION_IDLE_TTL must not be negative, got %s", ttl)
 	}
 	return ttl, nil
 }

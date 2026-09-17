@@ -95,10 +95,16 @@
     "loginFailedTitle": "Anmeldung fehlgeschlagen",
     "loginRetry": "Anmeldung wiederholen",
     "loggedOutTitle": "Sie wurden abgemeldet",
+    "loggedOutIdleTitle": "Sie wurden wegen Inaktivität abgemeldet",
     "loggedOutHint": "Schliessen Sie den Browser vollständig.",
     "loginAgain": "Erneut anmelden",
     "notFoundTitle": "Seite nicht gefunden",
     "home": "Zur Startseite"
+  },
+  "session": {
+    "warningTitle": "Sie werden bald abgemeldet",
+    "warningBody": "Sie waren längere Zeit inaktiv. Aus Sicherheitsgründen werden Sie in {{time}} abgemeldet.",
+    "stay": "Angemeldet bleiben"
   },
   "errorBoundary": {
     "title": "Ein Fehler ist aufgetreten",

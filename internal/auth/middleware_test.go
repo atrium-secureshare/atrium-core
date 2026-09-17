@@ -3,7 +3,9 @@ package auth
 import (
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"testing"
+	"time"
 )
 
 func protectedProbe() (http.Handler, *string) {
@@ -127,4 +129,94 @@ func clearedSessionCookie(rec *httptest.ResponseRecorder) bool {
 		}
 	}
 	return false
+}
+
+// issuedSession returns the session the response re-issued, if any.
+func issuedSession(t *testing.T, a *OIDCAuth, rec *httptest.ResponseRecorder) (SessionData, bool) {
+	t.Helper()
+	for _, c := range rec.Result().Cookies() {
+		if c.Name != sessionCookieName || c.MaxAge < 0 {
+			continue
+		}
+		data, err := decodeAndVerify(c.Value, a.sessionKey)
+		if err != nil {
+			t.Fatalf("decodeAndVerify re-issued cookie: %v", err)
+		}
+		return data, true
+	}
+	return SessionData{}, false
+}
+
+func TestRequireAuthRefreshesStaleSession(t *testing.T) {
+	a := newTestAuth()
+	a.sessionIdleTTL = 30 * time.Minute
+	probe, _ := protectedProbe()
+
+	rec := httptest.NewRecorder()
+	a.RequireAuth(probe).ServeHTTP(rec, requestWithSession(t, a, liveSession(5*time.Minute)))
+
+	data, ok := issuedSession(t, a, rec)
+	if !ok {
+		t.Fatal("expected the session cookie to be re-issued")
+	}
+	if time.Since(data.LastSeen) > time.Minute {
+		t.Errorf("LastSeen = %s, want about now", data.LastSeen)
+	}
+}
+
+func TestRequireAuthThrottlesRefresh(t *testing.T) {
+	a := newTestAuth()
+	a.sessionIdleTTL = 30 * time.Minute
+	probe, _ := protectedProbe()
+
+	rec := httptest.NewRecorder()
+	a.RequireAuth(probe).ServeHTTP(rec, requestWithSession(t, a, liveSession(time.Second)))
+
+	if _, ok := issuedSession(t, a, rec); ok {
+		t.Error("session cookie re-issued inside the refresh interval")
+	}
+}
+
+func TestRequireAuthAdvertisesDeadline(t *testing.T) {
+	for _, tc := range []struct {
+		name string
+		idle time.Duration
+		want int
+	}{
+		{"idle deadline wins", 30 * time.Minute, 1800},
+		{"absolute expiry when idle is off", 0, 36000},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			a := newTestAuth()
+			a.sessionIdleTTL = tc.idle
+			probe, _ := protectedProbe()
+
+			rec := httptest.NewRecorder()
+			a.RequireAuth(probe).ServeHTTP(rec, requestWithSession(t, a, liveSession(5*time.Minute)))
+
+			got, err := strconv.Atoi(rec.Header().Get(SessionExpiresHeader))
+			if err != nil {
+				t.Fatalf("%s = %q: %v", SessionExpiresHeader, rec.Header().Get(SessionExpiresHeader), err)
+			}
+			if got > tc.want || got < tc.want-5 {
+				t.Errorf("%s = %d, want about %d", SessionExpiresHeader, got, tc.want)
+			}
+		})
+	}
+}
+
+func TestRequireAuthDeniesIdleSession(t *testing.T) {
+	a := newTestAuth()
+	a.sessionIdleTTL = 30 * time.Minute
+	probe, _ := protectedProbe()
+
+	rec := httptest.NewRecorder()
+	a.RequireAuth(probe).ServeHTTP(rec, requestWithSession(t, a, liveSession(time.Hour)))
+
+	if rec.Code != http.StatusFound {
+		t.Fatalf("status = %d, want %d", rec.Code, http.StatusFound)
+	}
+	if !clearedSessionCookie(rec) {
+		t.Fatal("expected session cookie to be cleared")
+	}
 }

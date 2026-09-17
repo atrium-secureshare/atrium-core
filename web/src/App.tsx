@@ -18,6 +18,7 @@ import { SharesView } from '@/components/SharesView'
 import { ShareView } from '@/components/ShareView'
 import { MessageScreen } from '@/components/MessageScreen'
 import { TosOverlay } from '@/components/TosOverlay'
+import { SessionTimeout } from '@/components/SessionTimeout'
 import { Toast } from '@/components/Toast'
 
 // The download is fire-and-forget (no completion signal), so give the gateway a
@@ -30,7 +31,7 @@ const DOWNLOAD_REFRESH_MS = 1500
 // Shell.
 function App() {
   const { theme, toggle } = useTheme()
-  const { pathname } = useLocation()
+  const { pathname, search } = useLocation()
   const { t } = useTranslation()
 
   if (pathname === '/auth/error') {
@@ -49,7 +50,13 @@ function App() {
   }
 
   if (pathname === '/auth/logged-out') {
-    return <LoggedOut theme={theme} onToggleTheme={toggle} />
+    return (
+      <LoggedOut
+        theme={theme}
+        onToggleTheme={toggle}
+        idle={new URLSearchParams(search).get('reason') === 'idle'}
+      />
+    )
   }
 
   return <Shell theme={theme} onToggleTheme={toggle} />
@@ -61,9 +68,12 @@ function App() {
 function LoggedOut({
   theme,
   onToggleTheme,
+  idle,
 }: {
   theme: Theme
   onToggleTheme: () => void
+  /** Names inactivity as the reason, so the logout does not read as unexplained. */
+  idle: boolean
 }) {
   const { t } = useTranslation()
   const headingRef = useRef<HTMLDivElement>(null)
@@ -79,7 +89,7 @@ function LoggedOut({
       onToggleTheme={onToggleTheme}
       ref={headingRef}
       icon={<CheckCircle2 className="size-8" />}
-      title={t('app.loggedOutTitle')}
+      title={t(idle ? 'app.loggedOutIdleTitle' : 'app.loggedOutTitle')}
       description={t('app.loggedOutHint')}
       status
       action={
@@ -213,6 +223,7 @@ function Shell({
       </main>
 
       {tosRequired && <TosOverlay onAccepted={onTosAccepted} />}
+      <SessionTimeout />
 
       <Toast message={message} />
     </div>

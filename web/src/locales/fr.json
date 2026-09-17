@@ -95,10 +95,16 @@
     "loginFailedTitle": "Échec de la connexion",
     "loginRetry": "Réessayer la connexion",
     "loggedOutTitle": "Vous avez été déconnecté",
+    "loggedOutIdleTitle": "Vous avez été déconnecté pour cause d’inactivité",
     "loggedOutHint": "Fermez complètement le navigateur.",
     "loginAgain": "Se reconnecter",
     "notFoundTitle": "Page introuvable",
     "home": "Vers la page d’accueil"
+  },
+  "session": {
+    "warningTitle": "Vous allez être déconnecté",
+    "warningBody": "Vous êtes inactif depuis un moment. Pour des raisons de sécurité, vous serez déconnecté dans {{time}}.",
+    "stay": "Rester connecté"
   },
   "errorBoundary": {
     "title": "Une erreur s’est produite",
