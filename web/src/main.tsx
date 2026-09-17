@@ -11,6 +11,11 @@ import './index.css'
 import './i18n'
 import App from './App.tsx'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
+import { forgetExpiredDeadline } from '@/lib/session'
+
+// Before the first render, so a deadline left over from an earlier idle logout
+// cannot send this load back to the logged-out page.
+forgetExpiredDeadline()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
