@@ -1,0 +1,94 @@
+# Metadata for public-sector software directories (https://publiccodeyml.github.io).
+# Pinned to 0.5.0: swiss/publiccode-editor validates with publiccode-parser-go
+# v5.2.1, which rejects anything newer.
+# softwareVersion and releaseDate are stamped by release-please through the
+# annotations on their lines; do not edit the values by hand.
+publiccodeYmlVersion: "0.5.0"
+
+name: Atrium Secureshare Core
+applicationSuite: Atrium Secureshare
+url: https://github.com/atrium-secureshare/atrium-core
+softwareVersion: "0.3.1" # x-release-please-version
+releaseDate: "2026-09-17" # x-release-please-date
+logo: https://raw.githubusercontent.com/atrium-secureshare/atrium-core/main/.github/icon.svg
+
+platforms:
+  - web
+
+categories:
+  - document-management
+  - collaboration
+  - it-security
+
+developmentStatus: beta
+softwareType: standalone/web
+
+organisation:
+  uri: https://ld.admin.ch/canton/2
+  name: Bern
+
+description:
+  en:
+    localisedName: Atrium Secureshare Core
+    shortDescription: Identity-aware gateway for sharing files with external recipients from on-premise storage
+    longDescription: |
+      Atrium Secureshare Core is an identity-aware gateway that lets people
+      outside your organisation download and upload files that live in
+      on-premise or private-cloud storage, without exposing that storage to the
+      internet and without provisioning those people as accounts in it.
+
+      Every share is addressed to a named recipient, so there are no anonymous
+      public links. Recipients authenticate against your own OpenID Connect
+      provider, and multi-factor authentication can be required. Shares carry an
+      expiry date and a maximum download count. A folder share can be read-only,
+      a dropzone that only accepts uploads, or a workspace in which recipients
+      see either just their own uploads or the whole folder. Recipients can also
+      be required to accept a Terms of Service before any file is served.
+
+      Files are streamed through the gateway instead of being buffered, so the
+      gateway can be the only internet-facing component while the storage
+      backend stays in the internal network. Access events are written to a
+      structured audit log with pseudonymised recipient identities. Brand name,
+      logos, accent colour and theme are applied at runtime, so the service runs
+      under your own brand without a rebuild.
+
+      The gateway talks to storage over a small versioned JSON contract, which a
+      backend-specific plugin implements. Nextcloud is the first supported
+      backend.
+    documentation: https://github.com/atrium-secureshare/atrium-core/tree/main/docs
+    features:
+      - Identity-bound shares, no anonymous public links
+      - OIDC login with optional multi-factor enforcement
+      - Expiry dates and download caps per share
+      - Read-only, write-only and read-own folder shares
+      - Streaming download and upload proxy, no buffering
+      - Structured audit log with pseudonymised identities
+      - Runtime white-labelling of name, logo, colour and theme
+    screenshots:
+      - https://raw.githubusercontent.com/atrium-secureshare/atrium-plugin-nextcloud/main/docs/screenshots/core-listing.png
+      - https://raw.githubusercontent.com/atrium-secureshare/atrium-plugin-nextcloud/main/docs/screenshots/core-modal.png
+      - https://raw.githubusercontent.com/atrium-secureshare/atrium-plugin-nextcloud/main/docs/screenshots/core-dark.png
+
+legal:
+  license: MIT
+  mainCopyrightOwner: Kanton Bern
+
+maintenance:
+  type: contract
+  contractors:
+    - name: Bedag Informatik AG
+      email: info@bedag.ch
+      website: https://www.bedag.ch
+      until: "2031-12-31"
+  contacts:
+    - name: Lukas Furer
+      email: lukas.furer@be.ch
+      affiliation: Amt für Informatik und Organisation, Abteilung Business Services
+
+localisation:
+  localisationReady: true
+  availableLanguages:
+    - de
+    - fr
+    - it
+    - en
