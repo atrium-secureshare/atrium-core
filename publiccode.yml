@@ -20,7 +20,7 @@ categories:
   - collaboration
   - it-security
 
-developmentStatus: beta
+developmentStatus: stable
 softwareType: standalone/web
 
 organisation:
