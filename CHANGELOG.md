@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.0.0](https://github.com/atrium-secureshare/atrium-core/compare/v0.3.1...v1.0.0) (2026-10-01)
+
+
+### Features
+
+* declare the app production-ready for 1.0.0 ([#98](https://github.com/atrium-secureshare/atrium-core/issues/98)) ([239abe8](https://github.com/atrium-secureshare/atrium-core/commit/239abe8387053f4b8332f11e1d39ed4536c48740))
+
+
+### Bug Fixes
+
+* Bump @types/node from 26.5.1 to 26.6.1 in /web ([#81](https://github.com/atrium-secureshare/atrium-core/issues/81)) ([7e30ccb](https://github.com/atrium-secureshare/atrium-core/commit/7e30ccbcbaa87c76acbff380d3e911db48531a65))
+* Bump @types/node from 26.6.1 to 26.6.2 in /web ([#92](https://github.com/atrium-secureshare/atrium-core/issues/92)) ([b4a834b](https://github.com/atrium-secureshare/atrium-core/commit/b4a834be4c1b6157e50237b950d498d9eb7adff3))
+* Bump lucide-react from 1.45.0 to 1.47.0 in /web ([#82](https://github.com/atrium-secureshare/atrium-core/issues/82)) ([d81eff7](https://github.com/atrium-secureshare/atrium-core/commit/d81eff7df6099f3ff111822914b7437f054ddc88))
+* Bump lucide-react from 1.47.0 to 1.48.0 in /web ([#89](https://github.com/atrium-secureshare/atrium-core/issues/89)) ([c5b422f](https://github.com/atrium-secureshare/atrium-core/commit/c5b422f8cf6e8693acfcc9ea9fb0f845fd7a1f21))
+* Bump oxlint from 1.82.0 to 1.83.0 in /web ([#86](https://github.com/atrium-secureshare/atrium-core/issues/86)) ([29dfdf6](https://github.com/atrium-secureshare/atrium-core/commit/29dfdf616f322a8d6bf8afeb46f6e2e0d60b9a90))
+* Bump oxlint from 1.83.0 to 1.85.0 in /web ([#90](https://github.com/atrium-secureshare/atrium-core/issues/90)) ([51a2c0b](https://github.com/atrium-secureshare/atrium-core/commit/51a2c0b81c69e342e368f2c798512fc0386a3ed9))
+* Bump prettier from 3.9.6 to 3.9.8 in /web ([#83](https://github.com/atrium-secureshare/atrium-core/issues/83)) ([11fc55f](https://github.com/atrium-secureshare/atrium-core/commit/11fc55ff2234cf085cd90f11051c62fe712f2be0))
+* Bump prettier from 3.9.8 to 3.9.9 in /web ([#91](https://github.com/atrium-secureshare/atrium-core/issues/91)) ([7e063ca](https://github.com/atrium-secureshare/atrium-core/commit/7e063caef1e0ab782696fc7d9713bee93077652d))
+* Bump react-i18next from 17.0.13 to 17.0.14 in /web ([#84](https://github.com/atrium-secureshare/atrium-core/issues/84)) ([5cd6c73](https://github.com/atrium-secureshare/atrium-core/commit/5cd6c733129f5124e6dcdfee7b63074bf0d88ef1))
+* Bump react-i18next from 17.0.14 to 17.0.15 in /web ([#93](https://github.com/atrium-secureshare/atrium-core/issues/93)) ([5399e95](https://github.com/atrium-secureshare/atrium-core/commit/5399e9503a18c12f5ede646f1dccf6e04d52e7ca))
+* Bump react-router-dom from 7.18.3 to 7.18.4 in /web ([#85](https://github.com/atrium-secureshare/atrium-core/issues/85)) ([4033056](https://github.com/atrium-secureshare/atrium-core/commit/403305625e60826327ad8a3faf82ea11620cb022))
+* Bump tailwind-merge from 3.6.0 to 3.7.0 in /web ([#87](https://github.com/atrium-secureshare/atrium-core/issues/87)) ([de6689b](https://github.com/atrium-secureshare/atrium-core/commit/de6689b1f15a571345e7567114c4bd625c82d7fe))
+* Bump vite from 8.3.0 to 8.3.1 in /web ([#88](https://github.com/atrium-secureshare/atrium-core/issues/88)) ([d418439](https://github.com/atrium-secureshare/atrium-core/commit/d41843906df0cc82e53cc68e103a3acdc3a024c5))
+
 ## [0.3.1](https://github.com/atrium-secureshare/atrium-core/compare/v0.3.0...v0.3.1) (2026-09-17)
 
 
