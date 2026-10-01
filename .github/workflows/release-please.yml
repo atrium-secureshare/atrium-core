@@ -1,13 +1,13 @@
 name: release-please
 
 # Maintains a release PR from Conventional Commits on main. Merging that PR
-# tags the release, creates the GitHub Release and updates CHANGELOG.md, and
-# then builds the container image, pushes it to the GitHub Container Registry
-# and attaches a signed SBOM to it. The image build lives in this workflow
-# rather than reacting to the release event: releases created with the default
-# GITHUB_TOKEN do not trigger further workflow runs, so a separate
-# release-triggered workflow would never start (and working around that would
-# mean maintaining a PAT).
+# tags the release, creates the GitHub Release, updates CHANGELOG.md and
+# publiccode.yml, and then builds the container image, pushes it to the GitHub
+# Container Registry and attaches a signed SBOM to it. The image build lives in
+# this workflow rather than reacting to the release event: releases created
+# with the default GITHUB_TOKEN do not trigger further workflow runs, so a
+# separate release-triggered workflow would never start (and working around
+# that would mean maintaining a PAT).
 on:
   push:
     branches: [main]
@@ -27,10 +27,10 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
+      # Configured through release-please-config.json (manifest mode), which
+      # also stamps softwareVersion and releaseDate into publiccode.yml.
       - id: release
         uses: googleapis/release-please-action@v5
-        with:
-          release-type: go
 
       - if: steps.release.outputs.release_created
         uses: actions/checkout@v7
