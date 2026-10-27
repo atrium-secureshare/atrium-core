@@ -8,8 +8,8 @@ publiccodeYmlVersion: "0.5.0"
 name: Atrium Secureshare Core
 applicationSuite: Atrium Secureshare
 url: https://github.com/atrium-secureshare/atrium-core
-softwareVersion: "1.0.1" # x-release-please-version
-releaseDate: "2026-10-21" # x-release-please-date
+softwareVersion: "1.0.2" # x-release-please-version
+releaseDate: "2026-10-27" # x-release-please-date
 logo: https://raw.githubusercontent.com/atrium-secureshare/atrium-core/main/.github/icon.svg
 
 platforms:
