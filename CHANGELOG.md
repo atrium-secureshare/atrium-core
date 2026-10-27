@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.2](https://github.com/atrium-secureshare/atrium-core/compare/v1.0.1...v1.0.2) (2026-10-27)
+
+
+### Bug Fixes
+
+* Bump i18next from 26.4.7 to 26.5.7 in /web ([#125](https://github.com/atrium-secureshare/atrium-core/issues/125)) ([701fc2e](https://github.com/atrium-secureshare/atrium-core/commit/701fc2e4bd978d50a1d9634849054f59a97d7994))
+* Bump i18next-browser-languagedetector from 8.2.1 to 8.2.2 in /web ([#124](https://github.com/atrium-secureshare/atrium-core/issues/124)) ([20460ec](https://github.com/atrium-secureshare/atrium-core/commit/20460ece7d38b72d01954a20d6529afa2e6a2477))
+* Bump lucide-react from 1.58.0 to 1.61.0 in /web ([#122](https://github.com/atrium-secureshare/atrium-core/issues/122)) ([2b41036](https://github.com/atrium-secureshare/atrium-core/commit/2b410368af6d53d6b5d8b6088afa19c801013dad))
+* Bump oxlint from 1.88.0 to 1.89.0 in /web ([#123](https://github.com/atrium-secureshare/atrium-core/issues/123)) ([cd0d98f](https://github.com/atrium-secureshare/atrium-core/commit/cd0d98f0590b225f78dc2d0b6dc7e8d1e5a54a98))
+* Bump react-i18next from 17.0.20 to 17.1.5 in /web ([#120](https://github.com/atrium-secureshare/atrium-core/issues/120)) ([ba76a14](https://github.com/atrium-secureshare/atrium-core/commit/ba76a14424e13e8973b6c0ce340b05aa7b5787bb))
+* Bump vite from 8.3.4 to 8.3.5 in /web ([#121](https://github.com/atrium-secureshare/atrium-core/issues/121)) ([8cc35bd](https://github.com/atrium-secureshare/atrium-core/commit/8cc35bd3a6b7433fbff26ceeb07d5b58e36826a3))
+
 ## [1.0.1](https://github.com/atrium-secureshare/atrium-core/compare/v1.0.0...v1.0.1) (2026-10-21)
 
 
